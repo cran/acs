@@ -1,0 +1,11 @@
+eebad0f8d3de3a94bc94736a4ffbefc9 *DESCRIPTION
+6df4f109d043a3c66619c646be7fa462 *NAMESPACE
+e068b905642337edab6018cbbf658f44 *R/acs.R
+0741cbfc4312add3058d5279f79fa569 *data/kansas07.rda
+29103edd33f7a5764c126ebcabdea04d *data/kansas09.rda
+c17b379bb3b48d148f5dacae136a67c8 *man/acs-class.Rd
+5274a65e790d243daf490d47647ad493 *man/acs-package.Rd
+49f14f5fa2afbd3b4337763e8985c5dc *man/confint.acs.Rd
+9beceaa7a28f24f3cb2b30191cf509ff *man/kansas07.Rd
+ed02f6db24743089dbb367164b6dcc13 *man/kansas09.Rd
+9bab5346e3d88937d29204f6eb873323 *man/read.acs.Rd

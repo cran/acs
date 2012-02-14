@@ -1,0 +1,23 @@
+exportPattern("^[[:alpha:]]+")
+exportMethods(
+    "acs.colnames",
+    "acs.units",
+    "-",
+    "/",
+    "[<-",
+    "[",
+    "*",
+    "+",
+    "currency.year",
+    "endyear",
+    "estimate",
+    "geography",
+    "modified",
+    "show",
+    "span",
+    "standard.error",
+    "summary" 
+)
+exportClasses(
+    "acs" 
+)
