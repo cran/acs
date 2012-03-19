@@ -4,11 +4,12 @@
 \title{
 Return upper and lower bounds of given confidence intervals for acs objects.
 }
-\description{
-When passed a valid acs object, confint will return a list of two-column
-dataframes (one for each variable specified in \code{parm}) including
-lower and upper bounds for given confidence intervals.  Intervals can be one- or two-sided.
-}
+
+\description{ When passed an acs object, \code{confint} will return
+a list of two-column dataframes (one dataframe for each variable
+specified in \code{parm}) including lower and upper bounds for given
+confidence intervals.  Intervals can be one- or two-sided.  }
+
 \usage{
 \method{confint}{acs}(object, parm = "all", level = 0.95, alternative = "two.sided", \ldots)
 }
@@ -16,7 +17,7 @@ lower and upper bounds for given confidence intervals.  Intervals can be one- or
 
 \arguments{
   \item{object}{
-a valid acs object (or subset).
+a acs object (or subset).
 }
  \item{parm}{which variables/columns to return confidence intervals for;
   defaults to "all", which computes confidence intervals for all
@@ -51,10 +52,10 @@ confint(kansas09[20:25,], parm=c(4,5,10))
 confint(kansas09[20:25,c(4,5,10)])
 
 # store data and extract at will
-my_data <- confint(kansas09)
-str(my_data)
-my_data[32]
-my_data$Universe...TOTAL.POPULATION.IN.THE.UNITED.STATES..U.S..citizen.by.naturalization  
+my.conf <- confint(kansas09)
+str(my.conf)
+my.conf[32]
+my.conf$Universe...TOTAL.POPULATION.IN.THE.UNITED.STATES..U.S..citizen.by.naturalization  
 
 # try a different value for level
 confint(kansas09[1:10,6], level=.75)

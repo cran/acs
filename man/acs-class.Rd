@@ -18,28 +18,30 @@
 \alias{+,acs,acs-method}
 \alias{+,acs,numeric-method}
 \alias{+,numeric,acs-method}
-\alias{currency.year,acs-method}
-\alias{endyear,acs-method}
 \alias{estimate,acs-method}
-\alias{geography,acs-method}
 \alias{modified,acs-method}
 \alias{show,acs-method}
 \alias{span,acs-method}
 \alias{standard.error,acs-method}
 \alias{summary,acs-method}
-\alias{currency.year}
-\alias{endyear}
 \alias{estimate}
-\alias{geography}
 \alias{modified}
 \alias{span}
 \alias{standard.error}
 \alias{acs.colnames}
 \alias{acs.units}
-\alias{cbind.acs}
-\alias{rbind.acs}
 \alias{dim.acs}
 \alias{length.acs}
+\alias{acs.colnames<-}
+\alias{acs.units<-}
+\alias{is.acs}
+\alias{span<-}
+\alias{apply}
+\alias{acs.colnames<-,acs-method}
+\alias{acs.units<-,acs-method}
+\alias{is.acs}
+\alias{span<-,acs-method}
+\alias{apply,acs-method}
 
 \title{Class \code{"acs"}}
 \description{
@@ -50,13 +52,14 @@ analyze data in this form.
 }
 \section{Objects from the Class}{
 
-Objects can be created by calls of the form \code{new("acs", ...)}, or
-  through helper functions provided by the package (currently only
-  read.acs).  Once created, acs objects can be manipulated through new
-  methods to deal appropriately with common analytical tasks such as
-  combining subgroups or geographies, mathematical operations on
-  estimates, tests of significance, and computing (and eventually
-  plotting) confidence intervals.
+acs objects can be created by calls of the form \code{new("acs", ...)},
+  or through helper functions provided by the package (currently only
+  \code{read.acs}), or from the output of subsetting or other calls on
+  existing acs objects.  Once created, acs objects can be manipulated
+  through new methods to deal appropriately with common analytical tasks
+  such as combining subgroups or geographies, mathematical operations on
+  estimates, tests of significance, and computing (and plotting)
+  confidence intervals.
 
 }
 \section{Slots}{
@@ -71,9 +74,12 @@ Objects can be created by calls of the form \code{new("acs", ...)}, or
   2007--2009 ACS) }
 
 \item{\code{geography}:}{Object of class \code{"data.frame"} containing
-  four variables extracted from the data's geographic header: the
-  geographic place names, the summary level, and two numeric
-  identifiers}
+   columns extracted from the data's geographic header: typically
+   includes geographic place names, census summary level values, and
+   unique numeric identifiers, but can contain any geographic names or
+   labels desired.  When acs objects are created or modified, the first
+   geography column will be used to label estimates and standard
+   errors.}
 
 \item{\code{acs.colnames}:}{Object of class \code{"character"} giving
 the variable names for each column }
@@ -87,7 +93,7 @@ the variable names for each column }
 \item{\code{currency.year}:}{Object of class \code{"integer"} indicating
   the year that all currency values have been adjusted to (by default
   the same as endyear, but able to be modified by the user for
-  comparisons)}
+  comparisons with other years)}
 
 \item{\code{estimate}:}{Object of class \code{"matrix"}  holding
   the reported ACS estimates}
@@ -116,10 +122,15 @@ the variable names for each column }
     \item{span}{\code{signature(object = "acs")}: Standard accessor function; returns integer }
     \item{standard.error}{\code{signature(object = "acs")}: Standard
       accessor function; returns matrix }
+
+    \item{sum}{\code{signature(object = "acs")}: Aggregates (adds) all
+      estimates in the object, and adds the corresponding standard
+      errors in a statistically appropriate way; returns new acs object}
+
     \item{summary}{\code{signature(object = "acs")}: Prints standard summary data on both estimates
       and standard errors}
     \item{confint}{\code{signature(object = "acs")}: Prints estimates
-      with 90\% confidence intervals}
+      with confidence intervals}
 %     \item{-}{\code{signature(e1 = "acs", e2 = "acs")}: Subtract one
 %       estimate from another; deal appropriately with standard error
 %       (\code{sqrt(standard.error(e1)^2+standard.error(e2)^2} }
@@ -133,9 +144,22 @@ the variable names for each column }
 %       estimate by another; deal appropriately with standard error.  (Assumes that numerator
 %       is NOT a subset of denominator.) }
 %     \item{/}{\code{signature(e1 = "acs", e2 = "numeric")}: ... }
-%     \item{/}{\code{signature(e1 = "numeric", e2 = "acs")}: ... }
-%     \item{[<-}{\code{signature(x = "acs")}: ... }
-%     \item{[}{\code{signature(x = "acs")}: ... }
+% \item{/}{\code{signature(e1 = "numeric", e2 = "acs")}: ... }
+\item{[}{\code{signature(x = "acs")}: subsetting works for acs objects
+using standard \code{[i,j]} square bracket notation, similar to
+two-dimensional matrices; returns a new acs object with estimates,
+standard errors, and associated metadata for "i" rows (geographies) and
+"j" columns (variable columns); essentially, subsetting for this class is
+structured to mirror standard operations on matrix objects}
+
+   \item{[<-}{\code{signature(x = "acs")}: new values may be
+     replaced/assigned to an existing acs object using standard
+     \code{[i,j]} bracket notation.  The assignment can accept a number
+     of different forms: a valid acs object (including a subsetted one),
+     a list of two matrices (ideally named "estimate" and "error" or
+     "standard.error"), or a numeric object which may be coerced into a
+     matrix (to be used as estimates, with zero-values assigned to
+     corresponding standard errors). }
 %     \item{*}{\code{signature(e1 = "acs", e2 = "acs")}: ... }
 %     \item{*}{\code{signature(e1 = "acs", e2 = "numeric")}: ... }
 %     \item{*}{\code{signature(e1 = "numeric", e2 = "acs")}: ... }
@@ -143,11 +167,10 @@ the variable names for each column }
 %     \item{+}{\code{signature(e1 = "acs", e2 = "numeric")}: ... }
 %     \item{+}{\code{signature(e1 = "numeric", e2 = "acs")}: ... }
 	 }
-In addition to these methods, R subset and replacement methods are
-provided for acs class objects, and new methods for basic arithmetic functions (+, -, *,
-/) have been included to deal appropriately with combining estimates
-and standard errors. 
-       }
+
+	 In addition to these methods, new methods for basic arithmetic
+	 functions (+, -, *, /) have been provided to deal appropriately
+	 with combining estimates and standard errors.  }
 
 \author{
 Ezra Haber Glenn \email{eglenn@mit.edu}
@@ -175,12 +198,13 @@ kansas09[c("Linn County, Kansas", "Wilson County, Kansas") , grep(pattern="21.ye
 # addition on estimates and errors
 kansas09[1:4,25]+kansas09[1:4,49]
 
-# can even multiply and divided
+# can even multiply and divide
 # males per female, by county
 kansas09[1:4,2]/kansas09[1:4,26]
 
 # (males<5 plus females<5) * 12
-(kansas09[7,3]+kansas09[7,27]) * 15
+(kansas09[7,3]+kansas09[7,27]) * 12
 
 }
+
 \keyword{classes}

@@ -1,22 +1,22 @@
 Package: acs
 Type: Package
-Title: Download and manipulate data from the US Census ACS
-Version: 0.5
+Title: Download and manipulate data from the US Census American
+        Community Survey
+Version: 0.8
 Date: 2012-02-14
-Author: Ezra Haber Glenn
+Author: Ezra Haber Glenn <eglenn@mit.edu>
 Maintainer: Ezra Haber Glenn <eglenn@mit.edu>
 Description: Provides a general toolkit for downloading, managing, and
         analyzing data from the U.S. Census American Community Survey
-        (ACS) dataset.  Confidence intervals provided with the data are
+        (ACS).  Confidence intervals provided with the data are
         converted to standard errors to be bundled with estimates in
         complex acs objects.  Package provides new methods to conduct
         standard operations and tests of significance on acs objects in
-        statistically appropriate ways.  Current version is 0.5 +/-
-        .15.
+        statistically appropriate ways. Current version is 0.8 +/- .12.
 Suggests:
 Depends: stringr, methods
 License: GPL-3
 LazyLoad: yes
-Packaged: 2012-02-22 22:25:05 UTC; eglenn
+Packaged: 2012-03-19 00:55:39 UTC; eglenn
 Repository: CRAN
-Date/Publication: 2012-02-23 08:53:30
+Date/Publication: 2012-03-19 01:00:26
