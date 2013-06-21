@@ -17,20 +17,22 @@ and demonstrate various functions in the package.
   variables, representing county-level ACS data for the state of Kansas.  Also includes
   geographic and other metadata.
 
-  Note that in comparisson to \code{kansas09}, \code{kansas07} has far
+  Note that in comparison to \code{kansas09}, \code{kansas07} has far
   fewer rows, which illustrates the fact that the Census only provides
   ACS one-year data for the largest counties (over 65,000 population).
   }
 
 
 \source{
-U.S. Census American Community Surey, 2007; \url{http://www.census.gov/}
+U.S. Census American Community Survey, 2007; \url{http://www.census.gov/}
 }
 
 \examples{
 data(kansas07)
 str(kansas07)
 class(kansas07)
+
+geography(kansas07)
 
 # subsetting
 kansas07[1:3,2:4]

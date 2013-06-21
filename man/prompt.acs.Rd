@@ -4,8 +4,8 @@
 \title{Prompt for new values for metadata in an acs object.
 }
 \description{
-\code{prompt} provides a helper function to interactively set new values
-for row- and column-names in an acs object.
+Helper function to interactively set new values
+for row- and/or column-names in an acs object.
 }
 \usage{
 

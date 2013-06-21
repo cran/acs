@@ -11,7 +11,7 @@ Plot acs objects, with both estimates and confidence intervals.}
 
 \S4method{plot}{acs}(x, conf.level=.95, err.col="red", err.lwd=1,
 err.pch="-", err.cex=2, err.lty=2, x.res=300, labels="auto",
-by="geography", ...)
+by="geography", true.min=T, ...)
 
 }
 
@@ -46,6 +46,12 @@ by="geography", ...)
 \item{by}{in cases where multiple rows and columns are plotted,
   whether to provide a different plot for each value of \code{geography} (the
   default) or  \code{acs.colnames}; accepts either "geography" or "acs.colnames"} 
+
+\item{true.min}{whether to limit the lower bound of a confidence
+  interval to some value or now; \code{TRUE} (the default) allows for
+  negative lower bounds; also accepts \code{FALSE} to limit lower bounds
+  to 0, or any number, to use that as a minimum lower bound; see
+  details.}
 
 \item{...}{provided to allow for passing of additional arguments to
   plot functions}
@@ -84,8 +90,20 @@ by="geography", ...)
 	\code{plot} accepts many of the standard graphical arguments to
 	\code{plot}, such as \code{main}, \code{sub}, \code{xlab}, \code{pch},
 	and \code{col}, as well new ones listed above.
-	}
+
+	In some cases, the lower bound of a confidence interval may
+	extend below 0; in some cases this is desired, especially when a
+	variable is actually stating the \emph{difference} between two
+	estimates.  In other cases, this may seem confusing (for
+	example, when reporting the estimated count in a particular
+	category).  Setting \code{true.min} to \code{FALSE} (or 0) will
+	limit the lower boundary of any confidence intervals computed
+	and plotted.
+	
+      }
+
     }
+    
   }
   
 \examples{
@@ -116,7 +134,11 @@ sub="(99-percent margin of error shown in purple)")
 
 # something more complicated...
 
-plot(kansas07[c(1,3,4),3:25], err.col="purple", pch=16, err.pch="x", err.cex=1, ylim=c(0,5000), col=rainbow(23), conf.level=.99, labels=paste("grp. ",1:23))
+plot(kansas07[c(1,3,4),3:25], err.col="purple",
+pch=16, err.pch="x", err.cex=1, ylim=c(0,5000),
+col=rainbow(23), conf.level=.99,
+labels=paste("grp. ",1:23))
+
 }
 \keyword{methods}
 

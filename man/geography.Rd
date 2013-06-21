@@ -6,7 +6,7 @@
 \title{Return or replace geography metadata of an acs object.
 }
 
-\description{ \code{geography()} will return the geography of the
+\description{ \code{geography()} will return the geography of an acs
   object, as a dataframe.  Depending on the format of the data at import
   (and possibly the values of \code{geocols=} originally passed to
   \code{read.acs}), this may have multiple columns, but the number of
@@ -46,11 +46,18 @@ geography(object)<-value
 
 \seealso{
 
-  \code{prompt.acs}, a helper function to interactively generate a new
-  geography dataframe to be used for replacement.
-  
+  \code{\link{prompt.acs}}, a helper function to interactively generate
+  a new geography dataframe to be used for replacement.
+
+  \code{\link{acs-class}}
+
   }
 \author{
 Ezra Haber Glenn \email{eglenn@mit.edu}
 }
 
+\examples{
+data(lawrence10)
+geography(lawrence10)
+str(geography(lawrence10))
+}

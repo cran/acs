@@ -13,13 +13,13 @@ read.acs returns an acs object  with estimates, standard errors, and
 associated metadata.  
 }
 \usage{
-read.acs(filename, endyear = "auto", span = "auto", acs.units = "auto",
-geocols = "auto", skip = 1)
+read.acs(filename, endyear = "auto", span = "auto", col.names= "auto", acs.units = "auto",
+geocols = "auto", skip = "auto")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{filename}{
-the csv (or .txt) file to be input 
+the name of the \code{.csv}, \code{.zip}, or \code{.txt} file to be input 
 }
 
 \item{endyear}{ an integer (or "auto") indicating the latest year of the
@@ -30,18 +30,21 @@ endyear would be 2009) }
 read.acs guess the span from the filename (e.g., for data from the
 2005-2009 5-year ACS data, span would be 5) }
 
+\item{col.names}{a vector of column names to be used as
+  \code{acs.colnames} for the object; defaults to "auto", which will
+  result in auto-generated names from the headers lines of the input file}
+
 \item{acs.units}{ a vector of factors indicating what sort of data is
-contained within each column of data ("count","dollars","proportion",
-"ratio", "other")}
+  contained within each column of data ("count","dollars","proportion",
+  "ratio", "other")}
 
   \item{geocols}{ a vector of integers indicating which columns contain
 the geographic header information; defaults to "auto", which is the same
-as 3:1, which seems to be the standard for FactFinder-2 downloads; by
-default, \code{read.acs} will use column three columns as geographic
-names to label estimates}
+as 3:1, which seems to be the standard for FactFinder-2 downloads}
 
 \item{skip}{an integer indicating how many rows to skip before
-  processing the csv file; defaults to 1}
+  processing the csv file; defaults to "auto", which will try to guess
+  the proper value}
 }
 
 \details{
@@ -56,26 +59,41 @@ names to label estimates}
   based on current file-format used by the Census "AmericanFactinder 2"
   download site. 
 
+  The specified \code{filename} can be an actual \code{.csv} file, or
+  can be the name of a \code{.zip} file downloaded from the FactFinder
+  site.  If the latter, \code{read.acs} will extract the necessary data
+  and leave the compressed zipfile in place.
+
   As a default, \code{read.acs} assumes the first three columns will
   contain geographic header information, which seems to be the standard
   for the new Census American Factfinder download site. Users can also
   set different values for the \code{geocols=} to specify other columns
-  for this geographic information.  (Note: for files downloaded via the
-  Census "legacy" version of FactFinder, users will probably want to
-  specify \code{geocols=4:1}.)
+  for this geographic information.  The function will use the first of
+  these columns for geographic rownames to label estimates.  (By
+  default, then, this would be the third column of the actual file,
+  since \code{geocols=3:1}.  For files downloaded via the Census
+  "legacy" version of FactFinder prior to 2012, users will probably want
+  to specify \code{geocols=4:1}.
 
-  As for column names, by default \code{read.acs} skips the first row of
-  the file (which usually contains the Census Bureau's non-descriptive
-  table codes), but users are strongly encouraged to inspect their
-  downloaded csv files and set the \code{skip=} option explicitly;
-  FactFinder sometimes uses three, four, or even more rows to label
-  columns.  After the "skipped" rows, \code{read.acs} extracts
-  \code{acs.colnames} from the next row of the file (similar to
-  executing \code{read.csv(skip=1)} to create a dataframe).  (These new
-  \code{acs.colnames} are also used to try to determine \code{acs.units}
-  for the columns, but currently all this includes is a check for the
-  word "dollars" in the names; if this is not found, the columns are
-  assumed to be "counts".)
+  As for column names, by default \code{read.acs} will scan the file to
+  determine how many of the initial rows contain "header" information,
+  and will generate new \code{acs.colnames} by concatenating information
+  found in these rows.  Note that this can result in \emph{very long}
+  variable names, and users may want to modify the contents of
+  \code{acs.colnames} after creation.
+
+  Alternatively, users can inspect downloaded csv files prior to import
+  and specify the \code{skip=} option explicitly, as with
+  \code{read.csv} and other \code{read.XXX} functions (i.e., the value
+  of skip is equal to the number of rows prior to the last header row).
+  Regardless of whether \code{skip=} is set or "auto", however, the
+  column names will be created using all of the rows at the top of the
+  file, \emph{even the "skipped" ones}.
+
+  Finally, these new \code{acs.colnames} are used to guess intelligently
+  about values for \code{acs.units}, but currently all this includes is
+  a check for the word "dollars" in the names; if this is not found, the
+  columns are assumed to be "counts".
 
   When no other values are provided, \code{read.acs} will attempt to
   determine \code{endyear} and \code{span} from the filename.

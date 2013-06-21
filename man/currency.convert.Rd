@@ -42,9 +42,9 @@ currency.convert(object, rate="auto", newyear=NA_integer_, verbose=F)
 
 \seealso{
 
-  \code{link{currency.year}}
+  \code{\link{currency.year}}
 
-  \code{link{cpi}}
+  \code{\link{cpi}}
 
 }
 

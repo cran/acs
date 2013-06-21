@@ -18,7 +18,7 @@ examples in acs package.
 
 
 \source{
-U.S. Census American Community Surey, 2010; \url{http://www.census.gov/}
+U.S. Census American Community Survey, 2010; \url{http://www.census.gov/}
 }
 
 \examples{

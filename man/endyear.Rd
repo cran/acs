@@ -39,7 +39,10 @@ may be set incorrectly when data is imported, in which case
 
   \code{currency.year}, which is often what users will be intending to
   modify
-  }
+
+    \code{\link{acs-class}}
+
+}
 \author{
 Ezra Haber Glenn \email{eglenn@mit.edu}
 }
