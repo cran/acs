@@ -4,13 +4,21 @@ exportMethods(
     "acs.colnames",
     "acs.units<-",
     "acs.units",
+    "api.for",
+    "api.in",
     "apply",
     "-",
     "/",
     "[<-",
     "[",
+    "[[",
     "*",
     "+",
+    "c",
+    "combine<-",
+    "combine",
+    "combine.term<-",
+    "combine.term",
     "currency.year<-",
     "currency.year",
     "endyear<-",
@@ -18,8 +26,12 @@ exportMethods(
     "estimate",
     "geography<-",
     "geography",
+    "geo.list",
+    "length",
     "modified",
+    "name",
     "plot",
+    "results",
     "show",
     "span<-",
     "span",
@@ -28,5 +40,8 @@ exportMethods(
     "summary" 
 )
 exportClasses(
-    "acs" 
+    "acs",
+     "acs.lookup",
+     "geo",
+     "geo.set" 
 )

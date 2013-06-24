@@ -909,8 +909,7 @@ acs.fetch=function(endyear=2011, span=5, geography, table.name,
       if (is.geo.set(geography) && length(geography)>1){
         acs.obj=rbind(acs.fetch(endyear=endyear, span=span, geography=geography[1], variable=c("recur", variables), key=key, col.names=col.names), acs.fetch(endyear=endyear, span=span, geography=geography[2:length(geography)], variable=c("recur", variables), key=key, col.names=col.names))
         if(combine(geography)){
-          acs.obj=apply(acs.obj, FUN=sum, MARGIN=1,
-        agg.term=combine.term(geography), ...)
+          acs.obj=apply(acs.obj, FUN=sum, MARGIN=1, agg.term=combine.term(geography))
           acs.obj@acs.units=.acs.identify.units(acs.colnames(acs.obj))
         }
         return(acs.obj)
@@ -918,8 +917,7 @@ acs.fetch=function(endyear=2011, span=5, geography, table.name,
       if (is.geo.set(geography) && length(geography)==1) {
         acs.obj=acs.fetch(endyear=endyear, span=span, geography=geography[[1]], variable=c("recur", variables), key=key, col.names=col.names)
         if (combine(geography)) {
-          acs.obj=apply(acs.obj, FUN=sum, MARGIN=1,
-        agg.term=combine.term(geography), ...)
+          acs.obj=apply(acs.obj, FUN=sum, MARGIN=1, agg.term=combine.term(geography))
           acs.obj@acs.units=.acs.identify.units(acs.colnames(acs.obj))
         }
         return(acs.obj)
@@ -1465,14 +1463,10 @@ confint.acs=function(object, parm="all", level=.95, alternative="two.sided",...)
 }
 
 setMethod("sum", signature(x = "acs"), function(x,
-  agg.term=c("aggregate", "aggregate"), one.zero=FALSE, ..., na.rm=FALSE) {
+  agg.term=c("aggregate", "aggregate"), ..., na.rm=FALSE) {
   if(length(agg.term)<2){agg.term[2]=agg.term[1]}
   est=estimate(x)
   err=standard.error(x)
-  if (one.zero==T && any(est==0)) {
-    max.zero.error=max(err[est==0])
-    err[est==0]=c(max.zero.error,rep(0,sum(est==0)-1))
-  }
   if (dim(est)[1]==1){ geography=geography(x)} # single row
   else {
     geography=geography(x[1,1])

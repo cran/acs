@@ -19,13 +19,15 @@ and demonstrate various functions in the package.
 
 
 \source{
-U.S. Census American Community Surey, 2009; \url{http://www.census.gov/}
+U.S. Census American Community Survey, 2009; \url{http://www.census.gov/}
 }
 
 \examples{
 data(kansas09)
 str(kansas09)
 class(kansas09)
+
+geography(kansas09)
 
 # subsetting
 kansas09[1:3,2:4]

@@ -53,13 +53,13 @@ analyze data in this form.
 \section{Objects from the Class}{
 
 acs objects can be created by calls of the form \code{new("acs", ...)},
-  or through helper functions provided by the package (currently only
-  \code{read.acs}), or from the output of subsetting or other calls on
-  existing acs objects.  Once created, acs objects can be manipulated
-  through new methods to deal appropriately with common analytical tasks
-  such as combining subgroups or geographies, mathematical operations on
-  estimates, tests of significance, and computing (and plotting)
-  confidence intervals.
+  or through helper functions provided by the package (currently
+  \code{read.acs} and \code{acs.fetch}), or from the output of
+  subsetting or other calls on existing acs objects.  Once created, acs
+  objects can be manipulated through new methods to deal appropriately
+  with common analytical tasks such as combining subgroups or
+  geographies, mathematical operations on estimates, tests of
+  significance, and computing (and plotting) confidence intervals.
 
 }
 \section{Slots}{
@@ -88,7 +88,9 @@ the variable names for each column }
   whether the object has been modified since construction }
 
 \item{\code{acs.units}:}{Object of class \code{"factor"} designating the
-  type of units in each column (e.g., count or percentage or dollars)}
+  type of units in each column (e.g., count or percentage or dollars);
+  only used minimally, to check appropriateness of some operations;
+  mostly reserved for future functionality}
 
 \item{\code{currency.year}:}{Object of class \code{"integer"} indicating
   the year that all currency values have been adjusted to (by default
@@ -193,7 +195,8 @@ standard.error(kansas09[1:5,1:5])
 kansas09[1:4,6:9]
 
 # more complicated subsets
-kansas09[c("Linn County, Kansas", "Wilson County, Kansas") , grep(pattern="21.years", x=acs.colnames(kansas09))]
+kansas09[c("Linn County, Kansas", "Wilson County, Kansas") ,
+   grep(pattern="21.years", x=acs.colnames(kansas09))]
 
 # addition on estimates and errors
 kansas09[1:4,25]+kansas09[1:4,49]
@@ -205,6 +208,8 @@ kansas09[1:4,2]/kansas09[1:4,26]
 # (males<5 plus females<5) * 12
 (kansas09[7,3]+kansas09[7,27]) * 12
 
+# some replacement: males<5 as a percentage of all males
+kansas09[,3]=kansas09[,3]/kansas09[,2]
 }
 
 \keyword{classes}

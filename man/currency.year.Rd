@@ -24,7 +24,7 @@ currency.year(object)<-value
 \details{ \code{currency.year} will return the (integer) value of the
   dollar-year of object.
 
-  Assigning a new value to curency.year (through
+  Assigning a new value to currency.year (through
   \code{currency.year(object)<-value} or
   \code{currency.year(object)=value}) will change the value of
   \code{currency.year} in the object's metadata and also modify all
@@ -51,6 +51,8 @@ currency.year(object)<-value
   \code{\link{cpi}}
 
   \code{\link{currency.convert}}
+
+    \code{\link{acs-class}}
   }
 
 \author{
