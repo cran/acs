@@ -14,12 +14,12 @@ Search for relevant variables and tables from the US Census American Community S
   particular, "table.number", "table.name", and "keyword", as well as
   "endyear" and "span" --- and searches for matches in the meta-data of
   the Census tables.  When multiple search terms are passed to a given
-  argument (e.g., \code{acs.lookup(keyword=c("Female", "GED"))}), the
-  tool returns matches where ALL of the terms are found; similarly, when
-  more than one lookup argument is used (e.g.,
-  \code{acs.lookup(table.number="B01001", keyword="Female")}), the tool
-  searches for matches that include all of the terms (i.e., terms are
-  combined with a logical "AND", not a logical "OR").
+  argument (e.g., \code{keyword=c("Female", "GED")}), the tool returns
+  matches where ALL of the terms are found; similarly, when more than
+  one lookup argument is used (e.g., \code{table.number="B01001",
+  keyword="Female"}), the tool searches for matches that include all of
+  the terms (i.e., terms are combined with a logical "AND", not a
+  logical "OR").
 
   Results from acs.lookup --- which are acs.lookup class objects --- can
   then be inspected, subsetted (with [square brackets]), and combined

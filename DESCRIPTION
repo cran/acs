@@ -2,24 +2,17 @@ Package: acs
 Type: Package
 Title: Download, manipulate, and present data from the US Census
         American Community Survey
-Version: 1.0
-Date: 2013-06-24
+Version: 1.1
+Date: 2013-07-17
 Author: Ezra Haber Glenn <eglenn@mit.edu>
 Maintainer: Ezra Haber Glenn <eglenn@mit.edu>
-Description: Provides a general toolkit for downloading, managing,
-        analyzing, and presenting data from the U.S. Census American
-        Community Survey (ACS).  Confidence intervals provided with the
-        data are converted to standard errors to be bundled with
-        estimates in complex acs objects.  Package provides new methods
-        to conduct standard operations and tests of significance on acs
-        objects in statistically appropriate ways. Current version is
-        1.0 +/- .05.
+Description: Provides a general toolkit for downloading, managing, analyzing, and presenting data from the U.S. Census American Community Survey (ACS).  Confidence intervals provided with the data are converted to standard errors to be bundled with estimates in complex acs objects.  Package provides new methods to conduct standard operations and tests of significance on acs objects in statistically appropriate ways. Current version is 1.1 +/- .05.
 Suggests:
 Depends: R (>= 2.10), stringr, methods, plyr, XML
 License: GPL-3
 LazyData: yes
 LazyLoad: yes
-Packaged: 2013-06-21 19:22:34 UTC; eglenn
+Packaged: 2013-07-12 16:52:46 UTC; eglenn
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-06-21 21:48:56
+Date/Publication: 2013-07-12 22:46:04
