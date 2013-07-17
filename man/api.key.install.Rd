@@ -42,17 +42,3 @@ Ezra Haber Glenn \email{eglenn@mit.edu}
 \seealso{
 \code{\link{acs.fetch}}
 }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (key, file = "key.rda") 
-{
-    save(key, file = paste(system.file("extdata", package = "acs"), 
-        file, sep = "/"))
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.

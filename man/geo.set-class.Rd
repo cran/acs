@@ -5,6 +5,7 @@
 \alias{geo.set-class}
 \alias{api.for}
 \alias{api.in}
+\alias{sumlev}
 \alias{is.geo}
 \alias{geo.list}
 \alias{is.geo.set}
@@ -27,6 +28,7 @@
 \alias{length,geo.set-method}
 \alias{show,geo-method}
 \alias{name,geo-method}
+\alias{sumlev,geo-method}
 \alias{api.for,geo-method}
 \alias{api.in,geo-method}
 \alias{combine<-}

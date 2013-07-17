@@ -13,14 +13,14 @@ Download, manipulate, and present data from the US Census ACS
   data are converted to standard errors to be bundled with estimates
   as complex acs objects.  Package provides new methods to
   conduct standard operations and tests of significance on acs objects in statistically
-  appropriate ways.  Current version 1.0 +/- .05.
+  appropriate ways.  Current version 1.1 +/- .05.
 }
 \details{
 \tabular{ll}{
 Package: \tab acs\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2013-06-24\cr
+Version: \tab 1.1\cr
+Date: \tab 2013-07-17\cr
 License: \tab GPL-3\cr
 Depends: \tab stringr, methods, plyr, XML\cr
 }
@@ -39,20 +39,20 @@ Ezra Haber Glenn \email{eglenn@mit.edu}
 \references{
   \enumerate{
   
-\item{A Compass for Understanding and Using American Community Survey
-Data: What State and Local Governments Need to Know. Washington, DC:
+\item{"A Compass for Understanding and Using American Community Survey
+Data: What State and Local Governments Need to Know." Washington, DC:
 U.S. Census Bureau.
 2009. \url{http://www.census.gov/acs/www/Downloads/handbooks/ACSstateLocal.pdf}.}
 
-\item{acs.R: An R Package for Neighborhood-Level Data from the
-  U.S. Census. Ezra Haber Glenn, Department of Urban Studies and
+\item{"acs.R: An R Package for Neighborhood-Level Data from the
+  U.S. Census." Ezra Haber Glenn, Department of Urban Studies and
   Planning, Massachusetts Institute of Technology.  Presented at the
   Computers in Urban Planning and Urban Management Conference, July 6,
   2011.
   \url{http://dusp.mit.edu/sites/all/files/attachments/publication/glenn_acs_cupum_jou.pdf}.}
 
-\item{Working with acs.R, Ezra Haber Glenn.
-  \url{http://eglenn.scripts.mit.edu/citystate/wp-content/uploads/2013/02/wpid-working_with_acs_R2.pdf}}
+\item{"Working with acs.R (version 1.0)", Ezra Haber Glenn.
+  \url{http://eglenn.scripts.mit.edu/citystate/wp-content/uploads/2013/06/wpid-working_with_acs_R3.pdf}}
 
 \item{CityState webpage: \url{http://eglenn.scripts.mit.edu/citystate/}}
 

@@ -1,8 +1,10 @@
 \name{fips.state}
 \alias{fips.state}
 \alias{fips.county}
-\alias{fips.place}
 \alias{fips.county.subdivision}
+\alias{fips.place}
+\alias{fips.school}
+\alias{fips.american.indian.area}
 \docType{data}
 \title{
 FIPS codes and geographic names for use in searching and creating
@@ -26,6 +28,10 @@ County Subdivision:
 http://www.census.gov/geo/www/codes/cousub/download.html
 
 Place: http://www.census.gov/geo/www/codes/place/download.html
+
+School: http://www.census.gov/geo/www/codes/sd/
+
+American Indian Area:  http://www.census.gov/geo/www/codes/aia/
 }
 
 

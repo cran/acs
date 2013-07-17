@@ -37,8 +37,10 @@ currency.convert(object, rate="auto", newyear=NA_integer_, verbose=F)
 
 
 \value{ Returns a new acs object with updated dollar values and
-  \code{currency.year} metadata.  (Unlike \code{currency.year<-},
-  \code{currency.convert} does not alter the original object. }
+  \code{currency.year} metadata.
+
+  Unlike \code{currency.year<-}, \code{currency.convert} does not alter
+  the original object.}
 
 \seealso{
 

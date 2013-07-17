@@ -13,8 +13,8 @@ read.acs returns an acs object  with estimates, standard errors, and
 associated metadata.  
 }
 \usage{
-read.acs(filename, endyear = "auto", span = "auto", col.names= "auto", acs.units = "auto",
-geocols = "auto", skip = "auto")
+read.acs(filename, endyear = "auto", span = "auto", col.names= "auto",
+acs.units = "auto", geocols = "auto", skip = "auto")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
