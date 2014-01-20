@@ -405,7 +405,7 @@ geo.lookup=function(state, county, county.subdivision, place, american.indian.ar
     if(is.character(county)){
       fips.county=fips.county[grepl(paste(county, collapse="|"), fips.county$County.Name), ]}
     else {
-      fips.county=fips.county[fips.county$County.ANSI %in% county]
+      fips.county=fips.county[fips.county$County.ANSI %in% county, ]
     }
     county=fips.county[,3]
     # need to fix for when county is numeric vector, here and below
@@ -849,6 +849,9 @@ acs.lookup=function(endyear=2011, span=5, dataset="acs", keyword, table.name, ta
     if (endyear==2010) {
        doc=xmlInternalTreeParse(system.file("extdata/acs_5yr_2010_var.xml.gz", package="acs"))
     }
+ else if (endyear==2012) {
+ doc=xmlInternalTreeParse(system.file("extdata/acs_5yr_2012_var.xml.gz",
+ package="acs")) }
     else {
       doc=xmlInternalTreeParse(system.file("extdata/acs_5yr_2011_var.xml.gz", package="acs"))
          }
@@ -870,6 +873,8 @@ acs.lookup=function(endyear=2011, span=5, dataset="acs", keyword, table.name, ta
   names=xpathSApply(doc, STRING, xmlGetAttr, "name")
   names=gsub("!!!!"," ",names)
   names=gsub("!!"," ",names)
+  my.index=order(names)  # added for 2012, since data not sorted
+  names=names[my.index]  # added for 2012, since data not sorted
   names=gsub("E$", "", names) # remove "E" from variable name
   names=names[seq(1,length(names),2)] # only want every other
 
@@ -878,14 +883,17 @@ acs.lookup=function(endyear=2011, span=5, dataset="acs", keyword, table.name, ta
   table.names=gsub("!!"," ",table.names)
   table.numbers=regmatches(table.names, m=regexpr(table.names, pattern="^.*\\.")) # find table numbers
   table.names=gsub(x=table.names, pattern="^.*\\.  ", replacement="") # remove numbers from names 
+  table.names=table.names[my.index] # added for 2012, since data not sorted
   table.names=table.names[seq(1,length(table.names),2)] # only want every other
   
   table.numbers=substr(table.numbers, 1, unlist(lapply(table.numbers, nchar))-1) # remove trailing period
+  table.numbers=table.numbers[my.index] # added for 2012, since data not sorted
   table.numbers=table.numbers[seq(1,length(table.numbers),2)] # only want every other
 
   values=xpathSApply(doc, STRING, xmlValue)
   values=gsub("!!!!"," ",values)
   values=gsub("!!"," ",values)
+  values=values[my.index] # added for 2012, since data not sorted
   values=values[seq(1,length(values),2)] # only want every other
 
   if (length(names)==0){
@@ -1043,7 +1051,7 @@ acs.fetch=function(endyear=2011, span=5, geography, table.name,
           return(NA) }
       }
       endyear=as.integer(endyear)
-      if (endyear < 2010 |  endyear > 2011)
+      if (endyear < 2010 |  endyear > 2012)
         {
           warning("As of the date of this version of the acs package\n  Census API did not provides data for selected endyear")
         }

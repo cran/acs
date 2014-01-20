@@ -80,11 +80,13 @@ Ezra Haber Glenn \email{eglenn@mit.edu}
 \examples{
 geo.lookup(state="WA", county="Ska", county.subdivision="oo")
 geo.lookup(state="WA", county="Kit", place="Ra")
+
+# find all counties in WA or OR with capital M or B in name
 geo.lookup(state=c("WA", "OR"), county=c("M","B"))
 
-# find all unifed school district in Kansas with "Ma" in name
+# find all unifed school districts in Kansas with "Ma" in name
 geo.lookup(state="KS", school.district.unified="Ma")
 
-# find all american indian area with "Hop" in name
+# find all american indian areas with "Hop" in name
 geo.lookup(american.indian.area="Hop")
 }

@@ -87,8 +87,8 @@ each time.)
 By default, acs.fetch will download the ACS data from 2007--2011 (the
 Five-Year ACS), but the functions includes options for "endyear" and
 "span".  At present, the API only provides the five-year data for
-2006--2010 and 2007--2011, but as more data is added the function will
-be able to download other years and products.
+2006--2010, 2007--2011, and 2008--2012, but as more data is added the
+function will be able to download other years and products.
 
 Downloading based on a table number is probably the most fool-proof way
 to get the data you want, but acs.fetch will also accept a number of

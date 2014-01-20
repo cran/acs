@@ -45,3 +45,7 @@ exportClasses(
      "geo",
      "geo.set" 
 )
+import(XML)
+import(methods)
+import(plyr)
+import(stringr)

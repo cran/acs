@@ -24,7 +24,7 @@ and the more adventurous \code{yakima=geo.make(state="Washi",
 county=".*kima")} should work to create the a geo.set for Yakima
 county.)
 
-Other geographies (including tract, block.group, cas, msa, region,
+Other geographies (including tract, block.group, csa, msa, region,
 division, urban.area, necta, puma, zip.code. and/or
 congressional.district) can only be specified by FIPS codes (or "*" for
 all).
@@ -118,7 +118,7 @@ geo.make(us, region, division, state, county, county.subdivision,
     used in conjunction with state for summary level 340.}
 
   \item{necta}{a numeric code (or wildcard "*" for all) corresponding to
-    the desired FIPS New England City and Town Area (e.g., region=77650
+    the desired FIPS New England City and Town Area (e.g., necta=77650
     for Rutland, VT Micropolitan NECTA); if selected, no other
     geography options may be specified; setting necta corresponds to
     using census summary level 350.}

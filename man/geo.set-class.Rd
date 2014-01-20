@@ -114,10 +114,12 @@ or more frequently through the \code{geo.make()} helper function.
       geo.list of the geo.set (used internally)}
     \item{length}{\code{signature(x = "geo.set")}: returns an integer
       indicating how many geographies it contains; non-recursive. }
+
     \item{name}{\code{signature(object = "geo")}: returns the text name
       of an individual geo object.}
-	 }
-}
+
+    \item{sumlev}{\code{signature(object = "geo")}: returns the summary
+	 level of an individual geo object.}  } }
 
 \author{
 Ezra Haber Glenn \email{eglenn@mit.edu}
