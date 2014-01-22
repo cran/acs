@@ -13,14 +13,14 @@ Download, manipulate, and present data from the US Census ACS
   data are converted to standard errors to be bundled with estimates
   as complex acs objects.  Package provides new methods to
   conduct standard operations and tests of significance on acs objects in statistically
-  appropriate ways.  Current version 1.1 +/- .05.
+  appropriate ways.  Current version 1.2 +/- .05.
 }
 \details{
 \tabular{ll}{
 Package: \tab acs\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2013-07-17\cr
+Version: \tab 1.2\cr
+Date: \tab 2014-01-20\cr
 License: \tab GPL-3\cr
 Depends: \tab stringr, methods, plyr, XML\cr
 }
