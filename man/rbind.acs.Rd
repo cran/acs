@@ -23,10 +23,12 @@
 \details{ When passed two acs-class objects, rbind (and cbind) will
 first check to confirm whether the objects contain compatible data: same
 endyear and span; same column names (for rbind) or geography (for
-cbind).  If so, the function will return a new acs object that has
+cbind).  If not, it will issue a warning, but will still proceed.
+
+After this check, the function will return a new acs object that has
 resulted from combining the two arguments row-wise or column-wise.  The
 effect is essentially the same as rbind (or cbind) on the underlying
-estimate and standard.error matricies, with all the additional acs
+estimate and standard.error matrices, with all the additional acs
 metadata tended to.}
 
 \value{ Returns a single new acs object with all of the data contained

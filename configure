@@ -1,0 +1,16 @@
+#!/bin/bash          
+
+printf "checking whether api.key exists\n"
+
+if [ -e "${R_LIBRARY_DIR}/00LOCK-acs/acs/extdata/key.rda" ]
+then
+  printf "api.key exists:\n  archiving as ${R_LIBRARY_DIR}/api.key-holder.rda\n"
+  cp "${R_LIBRARY_DIR}/00LOCK-acs/acs/extdata/key.rda" "${R_LIBRARY_DIR}/api.key-holder.rda"
+  printf "  if install/cleanup process does not confirm api.key migration\n  use:\n\n  > api.key.migrate()\n\n  to ensure proper migration of key\n"
+fi
+
+
+
+
+
+

@@ -29,7 +29,8 @@ as output from calls to \code{acs.lookup}.  }
   endyear=2009}
     \item{\code{span}:}{Object of class \code{"numeric"} indicating
   the span in years of the census dataset; e.g., for data from the 2005-2009 ACS,
-  span=5}
+  span=5.  For decennial census datasets (SF1 and SF3), span =
+  0.}
     \item{\code{args}:}{Object of class \code{"list"} containing the
   search terms used in the call to \code{acs.lookup}, including some or
   all of: keyword, table.name, endyear, dataset, table.number, and case.sensitive.}

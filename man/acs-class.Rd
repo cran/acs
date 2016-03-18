@@ -45,10 +45,12 @@
 
 \title{Class \code{"acs"}}
 \description{
-The acs class provides a convenient wrapper for data from the
-U.S. Census American Community Survey.  Estimates and standard errors
-are kept together, along with metadata necessary to manipulate and
-analyze data in this form.
+
+The acs class provides a convenient wrapper for demographic data from
+the U.S. Census, especially the American Community Survey.  Estimates
+and standard errors are kept together, along with geographic information
+and metadata necessary to manipulate and analyze data in this form.
+
 }
 \section{Objects from the Class}{
 
@@ -58,20 +60,21 @@ acs objects can be created by calls of the form \code{new("acs", ...)},
   subsetting or other calls on existing acs objects.  Once created, acs
   objects can be manipulated through new methods to deal appropriately
   with common analytical tasks such as combining subgroups or
-  geographies, mathematical operations on estimates, tests of
-  significance, and computing (and plotting) confidence intervals.
+  geographies, mathematical operations on estimates, and computing (and
+  plotting) confidence intervals.
 
 }
 \section{Slots}{
   \describe{
 
     \item{\code{endyear}:}{Object of class \code{"integer"} indicating
-  the last year included in the dataset (e.g., 2009 for data from the
-  2005--2009 ACS)}
+  the last year included in the dataset (e.g., 2012 for data from the
+  2008--2012 ACS)}
 
 \item{\code{span}:}{Object of class \code{"integer"} representing the
   number of years the dataset spans (e.g., 3 for data from the
-  2007--2009 ACS) }
+  2011--2013 ACS); for decennial census datasets (SF1 and SF3), span =
+  0.}
 
 \item{\code{geography}:}{Object of class \code{"data.frame"} containing
    columns extracted from the data's geographic header: typically
@@ -95,7 +98,7 @@ the variable names for each column }
 \item{\code{currency.year}:}{Object of class \code{"integer"} indicating
   the year that all currency values have been adjusted to (by default
   the same as endyear, but able to be modified by the user for
-  comparisons with other years)}
+  comparisons with other years; see \code{\link{currency.convert}}.)}
 
 \item{\code{estimate}:}{Object of class \code{"matrix"}  holding
   the reported ACS estimates}

@@ -33,7 +33,11 @@ currency.convert(object, rate="auto", newyear=NA_integer_, verbose=F)
   numeric rate is provided through this option, actual \code{cpi} values
   are ignored.  When \code{verbose=T}, currency.convert will provide
   additional information about the rates of conversion and the
-  acs.colnames converted.}
+  acs.colnames converted.
+
+  As of version 2.0 the package includes CPI data from 1913 through
+  2015, allowing conversion of dollar values for any years in this
+  range.}
 
 
 \value{ Returns a new acs object with updated dollar values and
@@ -49,7 +53,11 @@ currency.convert(object, rate="auto", newyear=NA_integer_, verbose=F)
   \code{\link{cpi}}
 
 }
-
+\examples{
+lawrence10                                   # median income data, endyear = 2010
+currency.convert(lawrence10, newyear=2014)   # convert $$ to 2014 dollars 
+currency.convert(lawrence10, newyear=1929)   # convert $$ to 1929 dollars
+}
 \author{
 Ezra Haber Glenn \email{eglenn@mit.edu}
 }

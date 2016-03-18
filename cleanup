@@ -1,0 +1,14 @@
+#!/bin/bash          
+
+printf "cleanup:\n"
+printf "  checking whether archived api.key exists\n"
+
+if [ -e "${R_LIBRARY_DIR}/api.key-holder.rda" ]
+then
+  printf "  api.key exists: migrating...\n"
+  mkdir "${R_LIBRARY_DIR}/acs/extdata"
+  mv "${R_LIBRARY_DIR}/api.key-holder.rda" "${R_LIBRARY_DIR}/acs/extdata/key.rda"
+fi
+
+
+

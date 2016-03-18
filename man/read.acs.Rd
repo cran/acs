@@ -10,7 +10,11 @@ associated metadata.
 When passed a comma-delimited file from the U.S. Census American Community
 Survey (typically downloaded via the FactFinder website and unzipped),
 read.acs returns an acs object  with estimates, standard errors, and
-associated metadata.  
+associated metadata.
+
+Most users will prefer to start with \code{\link{acs.fetch}} to import
+data; \code{read.acs} is maintained as a "legacy" function, primarily
+for use in situations where data is not available via the Census API.  
 }
 \usage{
 read.acs(filename, endyear = "auto", span = "auto", col.names= "auto",
@@ -56,7 +60,7 @@ as 3:1, which seems to be the standard for FactFinder-2 downloads}
   simplifies the creation of new acs objects from these files.  The
   function uses some rudimentary algorithms to guess intelligently about
   values for metadata (such as \code{endyear} and \code{geography}),
-  based on current file-format used by the Census "AmericanFactinder 2"
+  based on current file-format used by the Census "AmericanFactFinder 2"
   download site. 
 
   The specified \code{filename} can be an actual \code{.csv} file, or

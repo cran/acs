@@ -8,9 +8,9 @@
 
 \description{ \code{geography()} will return the geography of an acs
   object, as a dataframe.  Depending on the format of the data at import
-  (and possibly the values of \code{geocols=} originally passed to
-  \code{read.acs}), this may have multiple columns, but the number of
-  geographic rows should be the same as the number of rows of the acs
+  (and possibly the values of \code{geocols=}, if the object was created
+  with \code{read.acs}), this may have multiple columns, but the number
+  of geographic rows should be the same as the number of rows of the acs
   estimates and standard errors.
 
   When used for assignment, \code{geography<-} will change the values

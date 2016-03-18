@@ -84,7 +84,7 @@ geo.lookup(state="WA", county="Kit", place="Ra")
 # find all counties in WA or OR with capital M or B in name
 geo.lookup(state=c("WA", "OR"), county=c("M","B"))
 
-# find all unifed school districts in Kansas with "Ma" in name
+# find all unified school districts in Kansas with "Ma" in name
 geo.lookup(state="KS", school.district.unified="Ma")
 
 # find all american indian areas with "Hop" in name

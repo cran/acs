@@ -227,37 +227,38 @@ geo.make(us, region, division, state, county, county.subdivision,
   argument to \code{acs.fetch}; see \code{\link{sum-methods}}.  
 
 The following table may be helpful in figuring out which options to set
-for which Census summary levels.  The third column indicates which
-levels of "endyear" are available via the Census API for each level, as
-of the date of this version of the acs package.
+for which Census summary levels.  For more information on which datasets
+and endyear/span combinations are available for each summary level, see
+\url{http://www.census.gov/data/developers/data-sets.html} (click each
+dataset and search for "Examples and Supported Geography").
 
-\tabular{cll}{
-  SUMMARY LEVEL \tab ARGUMENTS REQUIRED \tab ENDYEAR \cr
-  010  \tab us \tab 2010, 2011 \cr
-  020  \tab region \tab 2011  \cr
-  030 \tab  division \tab 2011\cr
-  040 \tab  state \tab 2010, 2011 \cr
-  050  \tab state, county \tab 2010, 2011\cr
-  060 \tab state, county, county.subdivision \tab 2010, 2011 \cr
-  140  \tab state, county, tract \tab 2010, 2011 \cr
-  150  \tab state, county, tract, block.group \tab 2010, 2011  \cr
-  160 \tab  state, place \tab 2010, 2011 \cr
-  250 \tab american.indian.area \tab 2010, 2011 \cr
-  310 \tab msa \tab 2011\cr
-  320 \tab state, msa \tab 2011 \cr
-  330 \tab csa \tab 2011\cr
-  340 \tab state, csa \tab 2011 \cr
-  350  \tab necta  \tab 2011 \cr
-  400  \tab urban.area \tab 2011 \cr
-  500  \tab state, congressional.district \tab 2010, 2011 \cr
-  510    \tab state, congressional.district, county \tab 2011 \cr
-  610    \tab state, state.legislative.district.upper \tab 2011 \cr
-  620    \tab state, state.legislative.district.lower \tab 2011 \cr
-  795    \tab state, puma \tab 2011 \cr
-  860  \tab zip.code \tab 2011 \cr
-  950  \tab state, school.district.elementary \tab 2011 \cr
-  960  \tab state, school.district.secondary \tab 2011 \cr
-  970  \tab state, school.district.unified \tab 2011 \cr
+\tabular{cl}{
+  SUMMARY LEVEL \tab ARGUMENTS REQUIRED \cr
+  010  \tab us \cr
+  020  \tab region   \cr
+  030 \tab  division \cr
+  040 \tab  state \cr
+  050  \tab state, county \cr
+  060 \tab state, county, county.subdivision \cr
+  140  \tab state, county, tract \cr
+  150  \tab state, county, tract, block.group  \cr
+  160 \tab  state, place \cr
+  250 \tab american.indian.area \cr
+  310 \tab msa \cr
+  320 \tab state, msa  \cr
+  330 \tab csa \cr
+  340 \tab state, csa  \cr
+  350  \tab necta   \cr
+  400  \tab urban.area  \cr
+  500  \tab state, congressional.district \cr
+  510    \tab state, congressional.district, county  \cr
+  610    \tab state, state.legislative.district.upper  \cr
+  620    \tab state, state.legislative.district.lower  \cr
+  795    \tab state, puma  \cr
+  860  \tab zip.code  \cr
+  950  \tab state, school.district.elementary  \cr
+  960  \tab state, school.district.secondary  \cr
+  970  \tab state, school.district.unified  \cr
 }
 
 All other arguments/combinations will either be ignored or result in a
@@ -274,10 +275,10 @@ Ezra Haber Glenn \email{eglenn@mit.edu}
       Planning, Massachusetts Institute of Technology.  Presented at the
       Computers in Urban Planning and Urban Management Conference, July
       6, 2011.
-      \url{http://dusp.mit.edu/sites/all/files/attachments/publication/glenn_acs_cupum_jou.pdf}.}
+      \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2171390}.}
 
     \item{Census API Supported Geography:
-      \url{http://api.census.gov/data/2011/acs5/geo.html}, \url{http://api.census.gov/data/2010/acs5/geo.html}} } }
+      \url{http://www.census.gov/data/developers/data-sets.html}}}}
 
 \seealso{
 \code{\link{geo.set-class}}

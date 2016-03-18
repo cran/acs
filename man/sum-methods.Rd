@@ -56,7 +56,7 @@ the term "aggregate" or the contents of the second item of the (vector)
 option \code{agg.term}; note: if \code{agg.term} is only one item in
 length, it will be repeated here if needed.
 
-All other acs-class metadata is preserved, except for the \code{modifed}
+All other acs-class metadata is preserved, except for the \code{modified}
 flag, which is set to TRUE.
 }
 }}
