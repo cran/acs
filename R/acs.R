@@ -123,6 +123,11 @@ api.url.maker=function(endyear, span, key, variables, dataset, geo.call) {
   api.url
 }
 
+# a function to determine if the api key has been set.
+api.key.exists=function() {
+     return(file.exists(file.path(system.file(package="acs"), "extdata", "key.rda")))
+}
+
 # a function to install a users key for use in this and future
 # sessions
 # writes to package extdata directory
