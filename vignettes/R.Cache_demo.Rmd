@@ -1,0 +1,70 @@
+---
+title: "Caching acs data"
+author: "Josiah Johnston"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Local cache demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Retrieving data from the census API can be slow, and many applications make repeated use of the same data. This vignette demonstrates use of the R.Cache package to speed up acs.fetch() by caching results of each unique function call on the file system.
+
+R.Cache documentation at <https://cran.r-project.org/web/packages/R.cache/R.cache.pdf>
+
+## Install packages as needed
+```{r}
+# install.packages("R.cache")
+```
+
+## Set up a cache location before you load the R.cache library or else it may prompt you to make a cache folder in your home directory.
+```{r}
+cache.dir = file.path(system.file(package="acs"), "extdata", "cache", "demo")
+dir.create(cache.dir, recursive=T, showWarnings=F)
+R.cache::setCacheRootPath(cache.dir)
+```
+
+## Make a copy of the acs.fetch function that does file-level caching
+```{r}
+library(acs)
+acs.fetch.and.cache = R.cache::addMemoization(acs.fetch)
+```
+
+## Time the first call to download data.. 
+A half-dozen columns for one zip code takes me less than 2 seconds, but a whole table takes more like 28.
+```{r}
+system.time(acs.fetch.and.cache(
+     endyear=2013, span = 5, key='',
+     geography=geo.make(zip.code='94709'),
+     # table.number="DP02",
+     variable=c('DP02_0015', 'DP02_0013', 'DP02_0014', 'DP02_0066P', 'DP02_0067P', 'DP02_0079', 'DP02_0080'),
+     dataset="acs_dp"))
+```
+
+## Time the second call.. almost immediate from local caching
+```{r}
+system.time(acs.fetch.and.cache(
+     endyear=2013, span = 5, key='',
+     geography=geo.make(zip.code='94709'),
+     # table.number="DP02",
+     variable=c('DP02_0015', 'DP02_0013', 'DP02_0014', 'DP02_0066P', 'DP02_0067P', 'DP02_0079', 'DP02_0080'),
+     dataset="acs_dp"))
+
+```
+
+## Clear out the cache directory from this demo.
+```{r}
+unlink(cache.dir, recursive=TRUE)
+```
+
+## Notes:
+This does not do field-level deduplication. The results of each function call are stored in files that are named based on the function arguments. If you ask for the exact same data with a slightly different function call, the data will be stored twice. 
+
+## Other R.Cache features
+R.Cache supports simple memoization to automatically create a wrapper (demonstrated above).
+R.Cache also lets you write your own wrapper functions, which can be useful for marking things as stale, flushing the cache, etc. Key API elements:
+* Generate a cache key from a list
+* Query the cache for existence
+* Load or save data via a cache key
+* Delete an individual cached item

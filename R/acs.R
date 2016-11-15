@@ -115,8 +115,17 @@ api.url.maker=function(endyear, span, key, variables, dataset, geo.call) {
   api.for=paste0("for=",paste(names(api.for(geo.call)), api.for(geo.call), sep=":"))
   api.in=paste0(paste(names(api.in(geo.call)), api.in(geo.call), sep=":"), collapse="+")
   if (!identical(api.in, "")) api.in=paste0("&in=",api.in)
-  api.url=paste0("http://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
+  if (dataset == "acs_dp" ) {
+	  api.url=paste0("http://api.census.gov/data/", endyear, "/acs" , span, "/profile?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
+  } else {
+	  api.url=paste0("http://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
+  }
   api.url
+}
+
+# a function to determine if the api key has been set.
+api.key.exists=function() {
+     return(file.exists(file.path(system.file(package="acs"), "extdata", "key.rda")))
 }
 
 # a function to install a users key for use in this and future
@@ -124,8 +133,9 @@ api.url.maker=function(endyear, span, key, variables, dataset, geo.call) {
 # writes to package extdata directory
 
 api.key.install=function(key, file="key.rda") {
-    dir.create(paste(system.file(package="acs"), "extdata", sep="/"), showWarnings=F)
-    save(key, file=paste(system.file("extdata", package="acs"), file, sep="/"))
+    dirpath = file.path(system.file(package="acs"), "extdata")
+    dir.create(dirpath, showWarnings=F)
+    save(key, file=file.path(dirpath, file))
 }
 
 # a function to migrate a previously installed api.key after package update
@@ -134,8 +144,8 @@ api.key.install=function(key, file="key.rda") {
 api.key.migrate=function() {
   key.path=system.file("../key-holder.rda", package="acs")
   if(file.exists(key.path)) {
-      dir.create(paste(system.file(package="acs"), "extdata", sep="/"), showWarnings=F)
-      file.copy(from=key.path, to=paste(system.file("extdata", package="acs"), "key.rda", sep="/"), overwrite=T)
+      dir.create(file.path(system.file(package="acs"), "extdata"), showWarnings=F)
+      file.copy(from=key.path, to=file.path(system.file("extdata", package="acs"), "key.rda"), overwrite=T)
   } else {warning("No archived key found;\n  try api.key.install with new key.")}
 }
  
@@ -145,7 +155,7 @@ api.key.migrate=function() {
 
 acs.tables.install=function() {
     filelist=readLines("http://web.mit.edu/eglenn/www/acs/acs-variables/filelist.txt")
-    dir.create(paste(system.file(package="acs"), "extdata", sep="/"), showWarnings=F)
+    dir.create(file.path(system.file(package="acs"), "extdata"), showWarnings=F)
     for (i in filelist) {
         download.file(url=paste("http://web.mit.edu/eglenn/www/acs/acs-variables/", i, sep=""), destfile=paste(system.file("extdata/", package="acs"), i, sep=""))}
 }
@@ -826,7 +836,11 @@ setClass(Class="acs.lookup", representation =
       if (!missing(table.number)){
         if (!missing(table.name)) warning("Cannot specify both table.name and table.number; using table.number")
    # in future?: consider changing next line to table.name="", and let table.number drive the train
-        if(endyear!=1990){table.name=paste(table.number, ".", sep="")} else {table.name=table.number}
+        if(endyear!=1990){
+             if(dataset=="acs_dp") {suffix = "_"}
+             else {suffix = "."}
+             table.name=paste(table.number, suffix, sep="")
+        } else {table.name=table.number}
 }
       if (missing(table.name) && missing(keyword)) {
         warning("No search terms provided; returning NA")
@@ -846,7 +860,11 @@ setClass(Class="acs.lookup", representation =
         doc.string=paste(dataset,"_", span,"yr_", endyear,"_var.xml.gz", sep="")
         doc.url=paste("http://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
       }
-      if(dataset=="sf1" | dataset=="sf3"){
+      else if(dataset=="acs_dp") {
+        doc.string=paste(dataset,"_", span,"yr_", endyear,"_var.xml.gz", sep="")
+        doc.url=paste("http://api.census.gov/data/", endyear,"/acs",span,"/profile/variables.xml", sep="")
+      }
+      else if(dataset=="sf1" | dataset=="sf3"){
         doc.string=paste(dataset,"_", endyear,".xml.gz", sep="")
         doc.url=paste("http://api.census.gov/data/", endyear, "/", dataset, "/variables.xml", sep="")
         span=0
@@ -877,6 +895,8 @@ setClass(Class="acs.lookup", representation =
         return(NA)
       }
       
+      ###############
+      # Build an XML search string to query the variable lookup tables
       if (!missing(keyword)){
           if (!case.sensitive) {str.a="contains(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'"}
         else {str.a="contains(@label, '"}
@@ -886,8 +906,10 @@ setClass(Class="acs.lookup", representation =
       } else {keyword=""}
 # add in stanza using table number
       if (!missing(table.name)) {
-          if (!case.sensitive) {str.a="contains(translate(@concept, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'"}
-        else {str.a="contains(@concept, '"}
+          if(dataset=="acs_dp") {search_attr="@xml:id"}
+          else {search_attr="@concept"}
+          if (!case.sensitive) {str.a=paste("contains(translate(",search_attr,", 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'",sep="")}
+          else {str.a=paste("contains(",search_attr,", '",sep="")}
           str.b=paste(str.a,table.name,"')", sep="")
           str.c=paste(str.b, collapse=" and ")
           table.name=str.c
@@ -903,54 +925,45 @@ setClass(Class="acs.lookup", representation =
       else {
              STRING=paste0("//ns:var[", paste(table.name, keyword, sep=" and "), "]")
       }
-# get variable codegs ("id")
-      names=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "xml:id"))
-      names=gsub("!!!!"," ",names)
-      names=gsub("!!"," ",names)
-      my.index=order(names)  # added for 2012, since data not sorted
-      names=names[my.index]  # added for 2012, since data not sorted
-      names=gsub("E$", "", names) # remove "E" from variable name
-      if(dataset=="acs" && length(names)>0) {names=names[seq(1,length(names),2)]} # only want every other
-    
-# get table names 
-      table.names=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "concept"))
-      table.names=gsub("!!!!"," ",table.names)
-      table.names=gsub("!!"," ",table.names)
-      table.numbers=regmatches(table.names, m=regexpr(table.names, pattern="^.*\\.")) # find table numbers
-      if(endyear==1990){
-        table.numbers=substr(names, 1, 5)
-        table.numbers=gsub(x=table.numbers, pattern="0$", replacement="")
-        table.numbers=gsub(x=table.numbers, pattern="$", replacement=".")
+      # Search the XML records and convert into a single dataframe (nodes as rows, attributes as columns). The columns id, label and concept will be relevant.
+      xml_dataframe = as.data.frame(t(suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlAttrs))))
+      # Replace !!!! and !! with spaces to ease parsing.
+      for (column in names(xml_dataframe)) { xml_dataframe[,column] = gsub("!!!!|!!", " ", xml_dataframe[,column]) }
+      # Filter out rows that are margins of error or percents (suffixes M, PE, & PM). 
+      remove_rows = grep(pattern="(PE|PM|M)$", xml_dataframe$id)
+      xml_dataframe = xml_dataframe[-1 * remove_rows,]
+      # Sort by id (legacy behavior)
+      xml_dataframe = xml_dataframe[order(xml_dataframe$id),]
+      # Extract root variable ids by deleting the E suffix from the id column in the remaining rows
+      xml_dataframe$census_var_code = gsub("E$", "", xml_dataframe$id)
+      # Clean up the human-readable name of the variable
+      xml_dataframe$var_name = gsub(x=xml_dataframe$label, pattern="*\\[.*\\]", replacement=":") # remove bracketed variable counts from SF1/SF3 tables 
+      # Extract table names (not ids)
+      xml_dataframe$table.names=gsub(x=xml_dataframe$concept, pattern="^.*\\.  ", replacement="") # remove table numbers from names 
+      xml_dataframe$table.names=gsub(x=xml_dataframe$table.names, pattern="* \\[.*\\]$", replacement="") # remove bracketed variable counts from SF1/SF3 tables 
+      # Extract table ids
+      if(dataset=="acs_dp") {
+           xml_dataframe$table.id = regmatches(xml_dataframe$id, m=regexpr(xml_dataframe$id, pattern = "^([^_]+)(?=_)", perl=TRUE))
+      } else {
+           if(endyear!=1990){
+                # Parse the table ids from the beginning of concept column, excluding the trailing dot '.'
+                xml_dataframe$table.id = regmatches(xml_dataframe$concept, m=regexpr(xml_dataframe$concept, pattern = "^[^\\.]+(?=\\. )", perl=TRUE))
+           } else { # Table ids were formatted differently in 1990 for sf1 & sf3..
+                xml_dataframe$table.id = substr(xml_dataframe$id, 1, 5)
+                xml_dataframe$table.id = gsub(x=xml_dataframe$table.id, pattern="0$", replacement="")
+           }
       }
-      table.names=gsub(x=table.names, pattern="^.*\\.  ", replacement="") # remove table numbers from names 
-      table.names=gsub(x=table.names, pattern="* \\[.*\\]$", replacement="") # remove bracketed variable counts from SF1/SF3 tables 
-      table.names=table.names[my.index] # added for 2012, since data not sorted
-      if(dataset=="acs" && length(table.names)>0) {table.names=table.names[seq(1,length(table.names),2)]} # only want every other
-      
-# get table numbers
-      table.numbers=substr(table.numbers, 1, unlist(lapply(table.numbers, nchar))-1) # remove trailing period
-      if(dataset=="acs"){  # sf1/sf3 table.numbers have already been reordered!
-        table.numbers=table.numbers[my.index]
-      } # added for 2012, since data not sorted
-      if(dataset=="acs" && length(table.numbers)>0) {table.numbers=table.numbers[seq(1,length(table.numbers),2)]} # only want every other
-    
-# get variable names
-      values=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "label"))
-      values=gsub("!!!!"," ",values)
-      values=gsub("!!"," ",values)
-      values=gsub(x=values, pattern="*\\[.*\\]", replacement=":") # remove bracketed variable counts from SF1/SF3 tables 
-      values=values[my.index] # added for 2012, since data not sorted
-      if(dataset=="acs"  && length(values)>0) {values=values[seq(1,length(values),2)]} # only want every other
-    
-      if (length(names)==0){
+
+      if (length(xml_dataframe)==0){
         warning("Sorry, no tables/keyword meets your search.\n  Suggestions:\n    try with 'case.sensitive=F',\n    remove search terms,\n    change 'keyword' to 'table.name' in search (or vice-versa)")
         return(NA)}
       free(doc)
       rm(doc)
       gc()
       new(Class="acs.lookup", endyear=endyear, span=span, args=arglist, 
-            results=data.frame(variable.code=names, 
-            table.number=table.numbers, table.name=table.names, variable.name=values, 
+            results=data.frame(variable.code=xml_dataframe$census_var_code, 
+            table.number=xml_dataframe$table.id, table.name=xml_dataframe$table.names,
+            variable.name=xml_dataframe$var_name, 
             stringsAsFactors=F))
     }
 
@@ -1125,7 +1138,7 @@ acs.fetch=function(endyear, span=5, geography, table.name,
           arglist=as.list(environment())
           missing.args=unlist(lapply(arglist, is.symbol))
           arglist=arglist[!missing.args]
-#          arglist$dataset="acs"
+          arglist$dataset=dataset
           arglist=arglist[names(arglist)!="variable"]
           arglist=arglist[names(arglist)!="geography"]
           arglist=arglist[names(arglist)!="key"]
@@ -1139,13 +1152,14 @@ acs.fetch=function(endyear, span=5, geography, table.name,
           variables.xml=results(variable)
           variables=variables.xml$variable.code
 # next "if" added to allow for sf1/sf3 fetching
-          if(dataset=="acs") {variables=paste(rep(variables, each=2), c("E","M"), sep="")}
+          # Expand the variable list from (v1, v2...) to (v1E, v1M, v2E, v2M...) to retrieve estimates & margins of error on alternating columns
+          if(dataset=="acs" || dataset=="acs_dp") {variables=paste(rep(variables, each=2), c("E","M"), sep="")}
         }
         if (!is.acs.lookup(variable)) {
           if (variable[1]=="recur") {
             variables=variable[2:length(variable)]}
           else {
-            if(dataset=="acs") {variables=paste(rep(variable, each=2), c("E","M"), sep="")}
+            if(dataset=="acs" || dataset=="acs_dp") {variables=paste(rep(variable, each=2), c("E","M"), sep="")}
             if(dataset=="sf1" | dataset=="sf3"){variables=variable}
             }
           if (variable[1]=="") {
@@ -1168,11 +1182,11 @@ acs.fetch=function(endyear, span=5, geography, table.name,
             col.names=paste(variables.xml$table.name, variables.xml$variable.name, sep=": ")
           }}
     #    if (identical(acs.units, "auto")) acs.units=rep("auto",(length(variables)/2))
-        if (identical(col.names, "auto") & dataset=="acs") col.names=rep("auto",(length(variables)/2))
+        if (identical(col.names, "auto") & (dataset=="acs" || dataset=="acs_dp")) col.names=rep("auto",(length(variables)/2))
         if (identical(col.names, "auto") & (dataset=="sf1" | dataset=="sf3")) col.names=rep("auto",length(variables))
         # deal with too many variables -- API currently limits to < 50
         # note two versions: acs datasets have doubled variables
-        if (length(variables) > var.max & dataset=="acs") {
+        if (length(variables) > var.max & (dataset=="acs" || dataset=="acs_dp")) {
           acs.obj=cbind(acs.fetch(endyear=endyear, span=span, geography=geography, variable=c("recur", variables[1:(var.max-2)]), key=key, dataset=dataset, col.names=col.names[1:((var.max-2)/2)]), acs.fetch(endyear=endyear, span=span, geography=geography, variable=c("recur", variables[(var.max-1):length(variables)]), col.names=col.names[(1+((var.max-2)/2)):length(col.names)], key=key, dataset=dataset))
           return(acs.obj)
         }
@@ -1216,7 +1230,7 @@ acs.fetch=function(endyear, span=5, geography, table.name,
         ## col.names=names(in.data)[seq(1,(length(in.data)-geo.length), 2)]
         ## col.names[1]=gsub("X..","",col.names[1])
         if (identical(col.names[1], "auto")) {  # check this!
-          if(dataset=="acs"){
+          if(dataset=="acs" || dataset=="acs_dp"){
           col.names=names(in.data)[seq(1,(length(in.data)-geo.length), 2)]
           } else if(dataset=="sf1" | dataset=="sf3") {
           col.names=names(in.data)[1:(length(in.data)-geo.length)]
@@ -1242,7 +1256,7 @@ acs.fetch=function(endyear, span=5, geography, table.name,
     #    acs.units=factor(acs.units, levels=.acs.unit.levels)
         GEOGRAPHY=as.data.frame(in.data[,geocols])
         names(GEOGRAPHY)=gsub(".", "", names(GEOGRAPHY), fixed=T) # remove strange trailing period
-        if(dataset=="acs"){
+        if(dataset=="acs" || dataset=="acs_dp"){
         acs.obj=new(Class="acs",
           endyear=endyear,
           span=span, 

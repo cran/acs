@@ -43,10 +43,10 @@ acs.lookup(endyear, span = 5, dataset = "acs", keyword,
     ACS data (should be 1, 3, or 5); defaults to 5.  Ignored and reset
     to 0 if dataset="sf1" or "sf3".}
 
-  \item{dataset}{either "acs" (the default), "sf1", or "sf3", indicating
-    whether to look for tables and variables in the American Community
-    Survey, the SF1 dataset (decennial/"short-form"), or the SF3 dataset
-    (decennial/"long-form").}
+  \item{dataset}{either "acs" (the default), "acs_dp", "sf1", or "sf3",
+    indicating whether to look for tables and variables in the American
+    Community Survey, the Data Profile tables of the ACS, the SF1 dataset
+    (decennial/"short-form"), or the SF3 dataset (decennial/"long-form").}
 
     \item{keyword}{ a string or vector of strings giving the search
       term(s) to find in the name of the ACS census variable (for

@@ -64,10 +64,10 @@ be 2011)}
       (Note: when set, this variable is passed to an internal call to
       acs.lookup---see \code{\link{acs.lookup}}).}
 
-  \item{dataset}{either "acs" (the default), "sf1", or "sf3", indicating
-    whether to fetch data from in the American Community Survey or the
-    SF1/SF3 datasets.  See details for more information about available
-    data.}
+  \item{dataset}{either "acs" (the default), "acs_dp", "sf1", or "sf3", indicating
+    whether to fetch data from in the American Community Survey, Data Profile tables
+    from the ACS, or the SF1/SF3 datasets.  See details for more information about 
+    available data.}
 
     \item{key}{a string providing the Census API key to use for when
       fetching data.  Typically saved once via \code{api.key.install}
@@ -154,6 +154,18 @@ fetched data from the Census API.  }
 Ezra Haber Glenn \email{eglenn@mit.edu}
 }
 
+\examples{
+acs.fetch(
+	endyear=2013, span = 5,
+	geography=geo.make(zip.code='94709'),
+	table.number="B01003",
+	dataset="acs")
+acs.fetch(
+	endyear=2013, span = 5,
+	geography=geo.make(zip.code='94709'),
+	table.number="DP02",
+	dataset="acs_dp")
+}
 
 \seealso{
 \code{\link{acs.lookup}}.

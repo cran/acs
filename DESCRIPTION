@@ -19,7 +19,8 @@ Description: Provides a general toolkit for downloading, managing,
   complex acs objects.  Package provides new methods to conduct
   standard operations on acs objects and present/plot data in
   statistically appropriate ways. Current version is 2.0 +/- .033.
-Suggests:
+Suggests: R.cache,
+    testthat
 Imports: graphics, stats, utils, RCurl
 Depends: R (>= 2.10), stringr, methods, plyr, XML
 License: GPL-3
