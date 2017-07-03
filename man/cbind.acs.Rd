@@ -1,15 +1,15 @@
-\name{rbind.acs}
-\alias{rbind.acs}
-\alias{rbind}
+\name{cbind.acs}
+\alias{cbind.acs}
+\alias{cbind}
 
-\title{Combine acs Objects by Rows
+\title{Combine acs Objects by Columns
 }
 
-\description{ Take a pair of acs objects and combine by rows.
+\description{ Take a pair of acs objects and combine by columns.
 }
 
 \usage{
-          \method{rbind}{acs}(e1, e2, ...)
+          \method{cbind}{acs}(e1, e2, ...)
           }
 
 \arguments{
@@ -17,14 +17,14 @@
   \item{...}{provided for consistency with cbind S3 method}
 }
 
-\details{ When passed two acs-class objects, rbind will first check to
+\details{ When passed two acs-class objects, cbind will first check to
 confirm whether the objects contain compatible data: same endyear and
-span; same column names.  If not, it will issue a warning, but will
-still proceed.
+span; same geography.  If not, it will issue a warning, but will still
+proceed.
 
 After this check, the function will return a new acs object that has
-resulted from combining the two arguments row-wise.  The effect is
-essentially the same as rbind on the underlying estimate and
+resulted from combining the two arguments column-wise.  The effect is
+essentially the same as cbind on the underlying estimate and
 standard.error matrices, with all the additional acs metadata tended
 to.}
 

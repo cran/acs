@@ -15,11 +15,11 @@ Provides a general toolkit for downloading, managing, analyzing, and
   converted to standard errors to be bundled with estimates in complex
   acs objects.  Package provides new methods to conduct standard
   operations on acs objects and present/plot data in statistically
-  appropriate ways. Current version is 2.0 +/- .033.  }
+  appropriate ways.}
 
 \details{ \tabular{ll}{ Package: \tab acs\cr Type: \tab Package\cr
-  Version: \tab 2.0\cr Date: \tab 2016-03-08\cr License: \tab GPL-3\cr
-  Depends: \tab stringr, methods, plyr, XML\cr }
+  Version: \tab 2.1.0\cr Date: \tab 2017-01-01\cr License: \tab GPL-3\cr
+  Depends: \tab stringr, methods, XML\cr }
 
 The package defines a new "acs" class (containing estimates, standard
   errors, geography, and metadata for tables from the U.S. Census

@@ -2,8 +2,8 @@ Package: acs
 Type: Package
 Title: Download, Manipulate, and Present American Community Survey and
         Decennial Data from the US Census
-Version: 2.0
-Date: 2016-03-08
+Version: 2.1.0
+Date: 2017-07-01
 Authors@R: c(person("Ezra Haber", "Glenn", role = c("aut", "cre"),
 		     email = "eglenn@mit.edu"))
 Author: Ezra Haber Glenn [aut, cre]
@@ -18,14 +18,14 @@ Description: Provides a general toolkit for downloading, managing,
   are converted to standard errors to be bundled with estimates in
   complex acs objects.  Package provides new methods to conduct
   standard operations on acs objects and present/plot data in
-  statistically appropriate ways. Current version is 2.0 +/- .033.
+  statistically appropriate ways.
 Suggests:
-Imports: graphics, stats, utils, RCurl
-Depends: R (>= 2.10), stringr, methods, plyr, XML
+Imports: graphics, stats, plyr, utils, RCurl
+Depends: R (>= 2.10), stringr, methods, XML
 License: GPL-3
 LazyData: yes
 LazyLoad: yes
 NeedsCompilation: no
-Packaged: 2016-03-17 21:58:22 UTC; eglenn
+Packaged: 2017-07-03 14:37:11 UTC; eglenn
 Repository: CRAN
-Date/Publication: 2016-03-18 00:17:55
+Date/Publication: 2017-07-03 16:46:52 UTC

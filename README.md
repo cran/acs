@@ -15,15 +15,24 @@ Ezra Haber Glenn <eglenn@mit.edu>
 
 ## Current version
 
+The current version of the package (2.1.0) was released in July, 2017.
+This minor update was necessary to accommodate to changes in the
+Census API format, including a shift to https transfer.  Other changes
+included removing plyr from a "dependency" and simply importing the
+required "rbind.fill" function, and updating cbind/rbind options to be
+consistent with S3 methods.
+
+## Previous versions
+
 In March, 2016, acs version 2.0 was released, considered a substantial
 update over the previous version 1.2 due to (1) a major expansion in
 the number of datasets available and (2) a modification to the
-acs.fetch and acs.look options, which now require a user to explicitly
+acs.fetch and acs.lookup options, which now require a user to explicitly
 specify "endyear=" for *all* calls.  
 
-The package now provides full support for *all ACS, SF1, and SF3 data*
-currently available via the Census API, including ACS data from
-2005-2014 and Decennial data from 1990, 2000, and 2010.
+As of this version, the package provides full support for *all ACS,
+SF1, and SF3 data* currently available via the Census API, including
+ACS data from 2005-2015 and Decennial data from 1990, 2000, and 2010.
  
 You can track development of the `acs` package at
 http://eglenn.scripts.mit.edu/citystate/.
@@ -38,21 +47,19 @@ To install the updated version, simply fire up an R session and type:
 install.packages("acs", clean=T)
 ```
 
-### Upgrading
+The package maintainer recommends two additional (optional) steps to
+improve performance:
 
-If you've previously installed the package, you can upgrade with:
-
-```R
-update.packages("acs", clean=T)
-```
-### api.keys migration
+#### Installing or migrating an api key
 
 To use the package to download data via the American Community Survey
 application program interface (API), users need to request an API key
 from the Census.  See
 http://www.census.gov/developers/tos/key_request.html.
 
-The package includes a function, api.key.install, to allow users to save their key in the package data directory, where it can be found and used automatically for future sessions:  
+The package includes a function, api.key.install, to allow users to
+save their key in the package data directory, where it can be found
+and used automatically for future sessions:
 
 ```R
 > # do this once, you never need to do it again
@@ -71,6 +78,35 @@ the issue.
 
 At worst, if both migration methods fail, you can simply re-run
 api.key.install() with your original key and be good to go.
+
+#### Installing census lookup tables
+
+To obtain variable codes and other metadata needed to access the
+Census API, both "acs.fetch" and "acs.lookup" must consult various XML
+lookup files, which are provided by the Census with each data release.
+As of version 2.0 these files are accessed online at run-time for each
+query (a change made to keep the package-size small to conform with
+CRAN policies).  As an alternative to package-time installation of
+lookup tables, users may run "acs.tables.install()" after installation
+to download and archive all current tables (approximately 10MB, as of
+version 2.0 release).
+
+Use of this function is completely optional and the package should
+work fine without it (assuming the computer is online and is able to
+access the lookup tables), but running it once may result in faster
+searches and quicker downloads for all subsequent sessions.  (The
+results are saved and archived, so once a user has run the function,
+it is unnecessary to run again, unless the acs package is re-installed
+or updated.)
+
+
+### Upgrading
+
+If you've previously installed the package, you can upgrade with:
+
+```R
+update.packages("acs", clean=T)
+```
 
 ## Use
 
@@ -115,11 +151,11 @@ To learn more, consult the following:
  + New ACS Data: the package now provides on-board support for all
    endyears and spans currently available through the API, including:
      
-    + American Community Survey 5-Year Data (2005-2009 through 2010-2014)
+    + American Community Survey 5-Year Data (2005-2009 through 2010-2015)
    
     + American Community Survey 3 Year Data (2013, 2012)
 
-    + American Community Survey 1 Year Data (2014, 2013, 2012, 2011)
+    + American Community Survey 1 Year Data (2015, 2014, 2013, 2012, 2011)
 
    See <http://www.census.gov/data/developers/data-sets.html> for more
    info, including guidance about which geographies are provided for
@@ -162,7 +198,7 @@ To learn more, consult the following:
    errors for Decennial data will always be zero, which is technically
    not correct for SF3 survey data, but no margins of error are
    reported by the API.) See
-   <http://www.census.gov/data/developers/data-sets/decennial-census-data.html>
+   <http://www.census.gov/data/developers/data-sets.html>
    for more info.
 
  + 1990 table names and numbers: Census support for the 1990 data has

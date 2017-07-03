@@ -43,6 +43,8 @@ S3method(confint,acs)
 S3method(dim,acs)
 S3method(length,acs)
 S3method(prompt,acs)
+S3method(cbind,acs)
+S3method(rbind,acs)
 exportClasses(
     "acs",
      "acs.lookup",
@@ -51,10 +53,11 @@ exportClasses(
 )
 import(XML)
 import(methods)
-import(plyr)
+# import(plyr)
 import(stringr)
 importFrom(utils,prompt)
 importFrom("graphics", "abline", "axis", "lines", "par", "points")
+importFrom("plyr", "rbind.fill")
 importFrom("stats", "confint", "dnorm", "qnorm")
-importFrom("RCurl", "url.exists")
+importFrom("RCurl", "url.exists", "getURL")
 importFrom("utils", "data", "file_test", "head", "read.csv", "tail", "unzip", "download.file")

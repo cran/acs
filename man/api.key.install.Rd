@@ -38,7 +38,7 @@ The requirement for a key seems to be laxly enforced by the Census API,
 but is nonetheless coded into the acs package.  Users without a key may
 find success by simply installing a blank key (i.e., key="") via
 \code{api.key.install(key="")}; similarly, calls to \code{acs.fetch} and
-\code{geo.make(..., check=T)} may success with a \code{key=""} argument.
+\code{geo.make(..., check=T)} may succeed with a \code{key=""} argument.
 Note that while this may work today, it may fail in the future if the
 API decides to start enforcing the requirement.
 
