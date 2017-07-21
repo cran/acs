@@ -15,14 +15,20 @@ Ezra Haber Glenn <eglenn@mit.edu>
 
 ## Current version
 
-The current version of the package (2.1.0) was released in July, 2017.
-This minor update was necessary to accommodate to changes in the
-Census API format, including a shift to https transfer.  Other changes
-included removing plyr from a "dependency" and simply importing the
-required "rbind.fill" function, and updating cbind/rbind options to be
-consistent with S3 methods.
+The current version of the package is 2.1.1, released late July, 2017.
+This minor update replaced the package's dependency on RCurl
+(specifically, RCurl::urlGet and RCurl::url_exists) with similar httr
+functions, to address some https/TLS incompatability issues between
+RCurl and users with Windows environments.  No other aspects of the
+package were changed with this release.
 
 ## Previous versions
+
+The previous version (2.1.0, released in early July 2017) was a minor
+update to accommodate to changes in the Census API format, including a
+shift to https transfer.  Other changes included removing plyr from a
+"dependency" and simply importing the required "rbind.fill" function,
+and updating cbind/rbind options to be consistent with S3 methods.
 
 In March, 2016, acs version 2.0 was released, considered a substantial
 update over the previous version 1.2 due to (1) a major expansion in
@@ -91,9 +97,13 @@ lookup tables, users may run "acs.tables.install()" after installation
 to download and archive all current tables (approximately 10MB, as of
 version 2.0 release).
 
+```R
+> acs.tables.install()
+```
+
 Use of this function is completely optional and the package should
 work fine without it (assuming the computer is online and is able to
-access the lookup tables), but running it once may result in faster
+access the lookup tables), but running it once will result in faster
 searches and quicker downloads for all subsequent sessions.  (The
 results are saved and archived, so once a user has run the function,
 it is unnecessary to run again, unless the acs package is re-installed

@@ -2,8 +2,8 @@ Package: acs
 Type: Package
 Title: Download, Manipulate, and Present American Community Survey and
         Decennial Data from the US Census
-Version: 2.1.0
-Date: 2017-07-01
+Version: 2.1.1
+Date: 2017-07-20
 Authors@R: c(person("Ezra Haber", "Glenn", role = c("aut", "cre"),
 		     email = "eglenn@mit.edu"))
 Author: Ezra Haber Glenn [aut, cre]
@@ -12,20 +12,21 @@ URL: http://dusp.mit.edu/faculty/ezra-glenn,
         http://eglenn.scripts.mit.edu/citystate/,
         http://mailman.mit.edu/mailman/listinfo/acs-r
 Description: Provides a general toolkit for downloading, managing,
-  analyzing, and presenting data from the U.S. Census, including SF1
-  (Decennial short-form), SF3 (Decennial long-form), and the American
-  Community Survey (ACS).  Confidence intervals provided with ACS data
-  are converted to standard errors to be bundled with estimates in
-  complex acs objects.  Package provides new methods to conduct
-  standard operations on acs objects and present/plot data in
+  analyzing, and presenting data from the U.S. Census
+  (<https://www.census.gov/data/developers/data-sets.html>), including
+  SF1 (Decennial short-form), SF3 (Decennial long-form), and the
+  American Community Survey (ACS).  Confidence intervals provided with
+  ACS data are converted to standard errors to be bundled with
+  estimates in complex acs objects.  Package provides new methods to
+  conduct standard operations on acs objects and present/plot data in
   statistically appropriate ways.
 Suggests:
-Imports: graphics, stats, plyr, utils, RCurl
+Imports: graphics, stats, plyr, utils, httr
 Depends: R (>= 2.10), stringr, methods, XML
 License: GPL-3
 LazyData: yes
 LazyLoad: yes
 NeedsCompilation: no
-Packaged: 2017-07-03 14:37:11 UTC; eglenn
+Packaged: 2017-07-21 12:39:15 UTC; eglenn
 Repository: CRAN
-Date/Publication: 2017-07-03 16:46:52 UTC
+Date/Publication: 2017-07-21 23:04:47 UTC

@@ -101,7 +101,7 @@ Ezra Haber Glenn \email{eglenn@mit.edu}
 }
 
 \examples{
-acs.lookup(endyear=2014, span=5, table.number="B01001")
+\dontrun{acs.lookup(endyear=2014, span=5, table.number="B01001")
 acs.lookup(endyear=2012, span=1, table.number="B01001", keyword="Female")
 acs.lookup(endyear=2012, span=1, keyword=c("Female", "GED"))
 acs.lookup(endyear=2000, dataset="sf3", table.number="P56")
@@ -110,5 +110,6 @@ age.by.sex=acs.lookup(endyear=2014, span=5, table.name="Age by Sex")
 age.by.sex
 workers.age.by.sex=age.by.sex[4:6]
 workers.age.by.sex
+}
 }
 

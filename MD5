@@ -1,7 +1,7 @@
-032b2e93e70ce0aa52a4f59ee6005579 *DESCRIPTION
-8f6371caa335f0f446f271fd60050acb *NAMESPACE
-aa7e907cbe8a598b2fbd00d5212cc620 *R/acs.R
-9ac58f40bf8d4e6f9b872efe08ec99c3 *README.md
+ad3320bb6a75bf7cef346308f9476f66 *DESCRIPTION
+4f15110e915b80356709373c434dfabe *NAMESPACE
+4faf11901581dbc34602e8c5bd21747c *R/acs.R
+9fa49670de9e3ab73b6e1b9948a61e45 *README.md
 dd35bf844195fa5db407951264fb40da *cleanup
 a56efe2530d38fee0cb013131d617121 *configure
 834aaef1f0f570abf01aaad5f1bd7c6a *data/cpi.rda
@@ -16,10 +16,10 @@ e87dfb9f2e46728feae6f4c483192921 *data/fips.state.rda
 006d4206327b7926bbae7e3b5ed0c798 *data/kansas09.rda
 fc9fffa358f7513a59cf6363a3c6d383 *data/lawrence10.rda
 a515d9c4869d71a917d2ba853109e9e6 *man/acs-class.Rd
-45a1dcf296ae37d6b60fd80ed01bc508 *man/acs-package.Rd
+68df196eabca39e0d866c9f3837c4d94 *man/acs-package.Rd
 87127c8d224459c265858349321b9ffe *man/acs.fetch.Rd
 4f736709a2a6fa7a80014eaf956b90bf *man/acs.lookup-class.Rd
-9befa03cd250b8f29b0b0019b32ae912 *man/acs.lookup.Rd
+871153157d717f9876a9d618eaa56a61 *man/acs.lookup.Rd
 0010d6441b306331fc20af2e910bec38 *man/acs.tables.install.Rd
 cb1d217b3dfe1d4e085d221daa2a2000 *man/api.key.install.Rd
 92fe80fad68597a995ed242691c46ab1 *man/api.key.migrate.Rd

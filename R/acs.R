@@ -856,16 +856,16 @@ setClass(Class="acs.lookup", representation =
           doc=xmlInternalTreeParse(system.file(paste("extdata/", doc.string, sep=""), package="acs"))
       }
       # next check online at census site
-      else if(url.exists(doc.url))
+      else if(!http_error(doc.url))
       {
-          temp <- getURL(doc.url, ssl.verifyPeer=FALSE)
+          temp <- GET(doc.url)
           doc=xmlInternalTreeParse(temp)
           # changed in v 2.1 due to https issue;
           # in v 2.0, previous two lines were just this:
           #   doc=xmlInternalTreeParse(doc.url)
       }
       # finally, check personal eglenn archive
-      else if(url.exists(paste("http://web.mit.edu/eglenn/www/acs/acs-variables/", doc.string, sep="")))
+      else if(!http_error(paste("http://web.mit.edu/eglenn/www/acs/acs-variables/", doc.string, sep="")))
       {
           # since only here is issues, give some advice
           warning(paste("XML variable lookup tables for this request\n  seem to be missing from '", doc.url, "';\n  temporarily downloading and using archived copies instead;\n  since this is *much* slower, recommend running\n  acs.tables.install()"), sep="")  
@@ -1209,8 +1209,7 @@ acs.fetch=function(endyear, span=5, geography, table.name,
         api.url=api.url.maker(endyear=endyear, span=span, key=key, variables=variables, dataset=dataset, geo.call=geography)
         geo.length=length(api.in(geography))+2
    # adding check to stop bad url / maybe do this later
-        url.test=url.exists(api.url, .header=T)
-        if(url.test["statusMessage"]!="OK") {
+        if(http_error(api.url)) {
             warning(call.=F, paste("No data found at:\n  ", api.url, sep=""))
         }
         in.data=suppressWarnings(read.csv(api.url, na.strings=c("-", "**", "***", "(X)", "N", "null"), stringsAsFactors=F))
