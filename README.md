@@ -15,18 +15,21 @@ Ezra Haber Glenn <eglenn@mit.edu>
 
 ## Current version
 
-The current version of the package is 2.1.1, released late July, 2017.
-This minor update replaced the package's dependency on RCurl
-(specifically, RCurl::urlGet and RCurl::url_exists) with similar httr
-functions, to address some https/TLS incompatability issues between
-RCurl and users with Windows environments.  No other aspects of the
-package were changed with this release.
+The current version of the package is 2.1.2, released in September,
+2017.  This minor update corrects a url-related bug experienced in
+attempting to access the latest (2016/1-year acs) data.
+
+No other aspects of the package were changed with this release.
 
 ## Previous versions
 
-The previous version (2.1.0, released in early July 2017) was a minor
-update to accommodate to changes in the Census API format, including a
-shift to https transfer.  Other changes included removing plyr from a
+The previous versions (2.1.0 and 2.1.1, both released in July 2017)
+were minor update to replace the package's dependency on RCurl
+(specifically, RCurl::urlGet and RCurl::url_exists) with similar httr
+functions and address some https/TLS incompatability issues between
+RCurl and users with Windows environments, all necessary to
+accommodate changes in the Census API format, including a shift to
+https transfer.  Other changes included removing plyr from a
 "dependency" and simply importing the required "rbind.fill" function,
 and updating cbind/rbind options to be consistent with S3 methods.
 

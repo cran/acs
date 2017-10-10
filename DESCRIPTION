@@ -2,8 +2,8 @@ Package: acs
 Type: Package
 Title: Download, Manipulate, and Present American Community Survey and
         Decennial Data from the US Census
-Version: 2.1.1
-Date: 2017-07-20
+Version: 2.1.2
+Date: 2017-09-25
 Authors@R: c(person("Ezra Haber", "Glenn", role = c("aut", "cre"),
 		     email = "eglenn@mit.edu"))
 Author: Ezra Haber Glenn [aut, cre]
@@ -27,6 +27,6 @@ License: GPL-3
 LazyData: yes
 LazyLoad: yes
 NeedsCompilation: no
-Packaged: 2017-07-21 12:39:15 UTC; eglenn
+Packaged: 2017-10-10 19:02:48 UTC; eglenn
 Repository: CRAN
-Date/Publication: 2017-07-21 23:04:47 UTC
+Date/Publication: 2017-10-10 22:08:31 UTC

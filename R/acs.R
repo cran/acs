@@ -108,13 +108,38 @@
 # "for" is pairlist, like pairlist(county=05) or c("block+group"="*")
 # "in" is pairlist including none or more of: state, county, tract,
 # each either number or "*"
+
+# 9/2017: fixing to enforce leading zeroes, e.g. CA=06, etc.
+# need to do for all fips types 
+# need to prevent zeroes on wildcard!!!
 api.url.maker=function(endyear, span, key, variables, dataset, geo.call) {
   variables=paste0(variables, collapse=",")
   if(span==0) {span=""}
-  api.for=paste0("for=",paste(names(api.for(geo.call)), api.for(geo.call), sep=":"))
-  api.in=paste0(paste(names(api.in(geo.call)), api.in(geo.call), sep=":"), collapse="+")
+  api.for.names=names(api.for(geo.call))
+  api.for.values=api.for(geo.call)
+  if(api.for.values!="*") # only add leading zeroes when not wildcard
+     {
+  if(api.for.names=="state") {api.for.values=sprintf("%02d",as.numeric(api.for.values))}
+  if(api.for.names=="county") {api.for.values=sprintf("%03d",as.numeric(api.for.values))}
+  if(api.for.names=="county+subdivision") {api.for.values=sprintf("%05d",as.numeric(api.for.values))}
+  if(api.for.names=="place") {api.for.values=sprintf("%05d",as.numeric(api.for.values))}
+  if(api.for.names=="school+district+(unified)" | api.for.names=="school+district+(elementary)" | api.for.names=="school+district+(secondary)") 
+     {api.for.values=sprintf("%05d",as.numeric(api.for.values))}
+     }
+  api.for=paste0("for=",paste(api.for.names, api.for.values, sep=":"))
+
+  api.in.names=names(api.in(geo.call))
+  api.in.values=api.in(geo.call)
+  notwild=api.in.values!="*" # index to avoid altering wildcards
+  api.in.values[api.in.names=="state" & notwild]=sprintf("%02d",as.numeric(api.in.values[api.in.names=="state" & notwild]))
+  api.in.values[api.in.names=="county" & notwild]=sprintf("%03d",as.numeric(api.in.values[api.in.names=="county" & notwild]))
+  api.in.values[api.in.names=="county+subdivision" & notwild]=sprintf("%05d",as.numeric(api.in.values[api.in.names=="county+subdivision" & notwild]))
+  api.in.values[api.in.names=="place" & notwild]=sprintf("%05d",as.numeric(api.in.values[api.in.names=="place" & notwild]))
+  api.in=paste0(paste(api.in.names, api.in.values, sep=":"), collapse="+")
+
   if (!identical(api.in, "")) api.in=paste0("&in=",api.in)
   api.url=paste0("https://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
+  if (endyear>2015 && dataset=="acs") {api.url=paste0("https://api.census.gov/data/", endyear, "/acs/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)}
   api.url
 }
 
@@ -792,7 +817,7 @@ setClass(Class="acs.lookup", representation =
       setGeneric("results", def=function(object){standardGeneric("results")})}else{}
     setMethod("results", "acs.lookup", function(object) object@results)
     # could add other slots, plus "show" method
-    
+  
     setMethod("show", "acs.lookup", function(object) {
       cat("An object of class \"acs.lookup\"\n")
       cat("endyear=", endyear(object)," ; span=", span(object), "\n\n")
@@ -800,26 +825,26 @@ setClass(Class="acs.lookup", representation =
       print(results(object))
       cat("\n")
       })
-    
-    
+  
+  
     is.acs.lookup=function(object){
       if (class(object)=="acs.lookup") {TRUE}
       else {FALSE}}
-    
+  
     setMethod("+", signature(e1 = "acs.lookup", e2 = "acs.lookup"), function(e1, e2) {
       e3=rbind(e1@results, e2@results)
       new(Class="acs.lookup", endyear=e1@endyear, args=list(e1@args, e2@args), span=e1@span, results=e3)})
-    
+  
     setMethod("c", signature(x = "acs.lookup" ), function(x, y, ...,
          recursive = FALSE) {
       if(missing(y)) x
       else x + c(y, ...)})
-    
+  
     setMethod(f="[", signature="acs.lookup", definition=function(x,i,j,...,drop=FALSE){
       if (missing(i)) i=j
       if (missing(j)) j=i
       new(Class="acs.lookup", endyear=x@endyear, args=x@args, span=x@span, results=x@results[i,])})
-    
+  
     acs.lookup=function(endyear, span=5, dataset="acs", keyword, table.name, table.number, case.sensitive=T) {
       arglist=as.list(environment())
       if (!missing(table.number)){
@@ -844,6 +869,10 @@ setClass(Class="acs.lookup", representation =
       if(dataset=="acs") {
         doc.string=paste(dataset,"_", span,"yr_", endyear,"_var.xml.gz", sep="")
         doc.url=paste("https://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
+        # next line to correct change in url for variables 2016 and later
+        if(endyear>2015){
+        doc.url=paste("https://api.census.gov/data/", endyear,"/acs/acs",span,"/variables.xml", sep="")
+        }
       }
       if(dataset=="sf1" | dataset=="sf3"){
         doc.string=paste(dataset,"_", endyear,".xml.gz", sep="")
@@ -879,7 +908,7 @@ setClass(Class="acs.lookup", representation =
          warning("As of the date of this version of the acs package\n  no variable lookup tables were available\n  for this dataset/endyear/span combination;\n  perhaps try a different combination...?\n  Returning NA;")
         return(NA)
       }
-      
+    
       if (!missing(keyword)){
           if (!case.sensitive) {str.a="contains(translate(@label, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'"}
         else {str.a="contains(@label, '"}
@@ -887,7 +916,7 @@ setClass(Class="acs.lookup", representation =
           str.c=paste(str.b, collapse=" and ")
           keyword=str.c
       } else {keyword=""}
-# add in stanza using table number
+
       if (!missing(table.name)) {
           if (!case.sensitive) {str.a="contains(translate(@concept, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'"}
         else {str.a="contains(@concept, '"}
@@ -895,7 +924,38 @@ setClass(Class="acs.lookup", representation =
           str.c=paste(str.b, collapse=" and ")
           table.name=str.c
           if(endyear==1990){table.name=gsub(table.name, pattern="@concept", replacement="@xml:id")}
-      } else {table.name=""}
+          } else {table.name=""}
+
+      ## # add in stanza using table number for 2016+ / broken!
+      ## if (endyear>2015 && !missing(table.number)) {
+      ##     if (!case.sensitive) {str.a="contains(translate(@group, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'"}
+      ##   else {str.a="contains(@group, '"}
+      ##     str.b=paste(str.a,table.number,"')", sep="")
+      ##     str.c=paste(str.b, collapse=" and ")
+      ##     table.name=str.c
+      ##     }
+
+      # add in stanza using table number for 2016+ NEW
+      if (endyear>2015 && !missing(table.number)) {
+          if (!case.sensitive) {
+          table.number=toupper(table.number)
+          }
+          str.a="@group='"
+          str.b=paste(str.a,table.number,"'", sep="")
+          str.c=paste(str.b, collapse=" or ")
+          table.name=str.c
+          }
+
+      # add in stanza using table numbers for <2016 NEW
+      if (endyear<2016 && !missing(table.number)) {
+          if (!case.sensitive) {
+          table.number=toupper(table.number)
+          }
+          str.a="contains(@concept, '"
+          str.b=paste(str.a,table.number,".')", sep="")
+          str.c=paste(str.b, collapse=" or ")
+          table.name=str.c
+          }
 
       if(identical(table.name, "")){
              STRING=paste0("//ns:var[", keyword, "]")
@@ -913,8 +973,10 @@ setClass(Class="acs.lookup", representation =
       my.index=order(names)  # added for 2012, since data not sorted
       names=names[my.index]  # added for 2012, since data not sorted
       names=gsub("E$", "", names) # remove "E" from variable name
-      if(dataset=="acs" && length(names)>0) {names=names[seq(1,length(names),2)]} # only want every other
-    
+      if(dataset=="acs" && length(names)>0){
+      if(endyear>2015) {names=names[seq(1,length(names),4)]} # only every forth (no EA,MA,M)
+      else {names=names[seq(1,length(names),2)]}} # only want every other
+  
 # get table names 
       table.names=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "concept"))
       table.names=gsub("!!!!"," ",table.names)
@@ -925,26 +987,33 @@ setClass(Class="acs.lookup", representation =
         table.numbers=gsub(x=table.numbers, pattern="0$", replacement="")
         table.numbers=gsub(x=table.numbers, pattern="$", replacement=".")
       }
+      if(endyear>2015){
+      table.numbers=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "group"))
+      }
       table.names=gsub(x=table.names, pattern="^.*\\.  ", replacement="") # remove table numbers from names 
       table.names=gsub(x=table.names, pattern="* \\[.*\\]$", replacement="") # remove bracketed variable counts from SF1/SF3 tables 
       table.names=table.names[my.index] # added for 2012, since data not sorted
       if(dataset=="acs" && length(table.names)>0) {table.names=table.names[seq(1,length(table.names),2)]} # only want every other
-      
-# get table numbers
-      table.numbers=substr(table.numbers, 1, unlist(lapply(table.numbers, nchar))-1) # remove trailing period
-      if(dataset=="acs"){  # sf1/sf3 table.numbers have already been reordered!
-        table.numbers=table.numbers[my.index]
-      } # added for 2012, since data not sorted
-      if(dataset=="acs" && length(table.numbers)>0) {table.numbers=table.numbers[seq(1,length(table.numbers),2)]} # only want every other
     
+# get table numbers
+      if(endyear<2015){table.numbers=substr(table.numbers, 1, unlist(lapply(table.numbers, nchar))-1)} # remove trailing period
+      if(dataset=="acs"){  # sf1/sf3 table.numbers have already been reordered!
+        table.numbers=table.numbers[my.index]        
+      } # added for 2012, since data not sorted
+      if(dataset=="acs" && length(table.numbers)>0) {
+      if(endyear>2015){table.numbers=table.numbers[seq(1,length(table.numbers),4)]}     # only want every fourth
+      else {table.numbers=table.numbers[seq(1,length(table.numbers),2)]}} # only want every other
+  
 # get variable names
       values=suppressWarnings(xpathSApply(doc, STRING, namespaces="ns", xmlGetAttr, "label"))
       values=gsub("!!!!"," ",values)
       values=gsub("!!"," ",values)
       values=gsub(x=values, pattern="*\\[.*\\]", replacement=":") # remove bracketed variable counts from SF1/SF3 tables 
       values=values[my.index] # added for 2012, since data not sorted
-      if(dataset=="acs"  && length(values)>0) {values=values[seq(1,length(values),2)]} # only want every other
-    
+      if(dataset=="acs"  && length(values)>0) {
+      if(endyear>2015){values=values[seq(1,length(values),4)]} # every fourth
+      else {values=values[seq(1,length(values),2)]}} # only want every other
+  
       if (length(names)==0){
         warning("Sorry, no tables/keyword meets your search.\n  Suggestions:\n    try with 'case.sensitive=F',\n    remove search terms,\n    change 'keyword' to 'table.name' in search (or vice-versa)")
         return(NA)}
