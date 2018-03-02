@@ -847,6 +847,9 @@ setClass(Class="acs.lookup", representation =
   
     acs.lookup=function(endyear, span=5, dataset="acs", keyword, table.name, table.number, case.sensitive=T) {
       arglist=as.list(environment())
+      # next line is a kludge/patch to deal with problem with XML tables after 2015
+      if (endyear>2015) {warning(paste("acs.lookup for endyear>2015: using 2015 variable codes to access ", endyear," data.\n  (See ?acs.lookup for details)", sep=""))
+      endyear=2015}
       if (!missing(table.number)){
         if (!missing(table.name)) warning("Cannot specify both table.name and table.number; using table.number")
    # in future?: consider changing next line to table.name="", and let table.number drive the train

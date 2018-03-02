@@ -15,23 +15,35 @@ Ezra Haber Glenn <eglenn@mit.edu>
 
 ## Current version
 
-The current version of the package is 2.1.2, released in September,
-2017.  This minor update corrects a url-related bug experienced in
-attempting to access the latest (2016/1-year acs) data.
+The current version of the package is 2.1.3, released in March, 2018.
+This *extremely* minor update corrects a problem related to acs.lookup
+for acs tables for 2016.
+
+Please note: this fix is more of a "workaround" than a true fix:
+starting with the 2016 release, the Census Bureau changed the format
+for the XML variable lookup tables and calls to acs.lookup (and
+acs.fetch) were failing; the quick solution was to simply use the 2015
+lookup tables for these requests, which should be safe in most
+situations, since table numbers and variable codes generally do not
+change from year to year.  (In some situations this assumption is not
+true: see
+https://www.census.gov/programs-surveys/acs/technical-documentation/table-and-geography-changes/2016/5-year.html
+for details.)
 
 No other aspects of the package were changed with this release.
 
 ## Previous versions
 
-The previous versions (2.1.0 and 2.1.1, both released in July 2017)
-were minor update to replace the package's dependency on RCurl
-(specifically, RCurl::urlGet and RCurl::url_exists) with similar httr
-functions and address some https/TLS incompatability issues between
-RCurl and users with Windows environments, all necessary to
-accommodate changes in the Census API format, including a shift to
-https transfer.  Other changes included removing plyr from a
-"dependency" and simply importing the required "rbind.fill" function,
-and updating cbind/rbind options to be consistent with S3 methods.
+The previous versions (2.1.2, released in September 2017; 2.1.0 and
+2.1.1, both released in July 2017) were minor updates to replace the
+package's dependency on RCurl (specifically, RCurl::urlGet and
+RCurl::url_exists) with similar httr functions and address some
+https/TLS incompatability issues between RCurl and users with Windows
+environments, all necessary to accommodate changes in the Census API
+format, including a shift to https transfer.  Other changes included
+removing plyr from a "dependency" and simply importing the required
+"rbind.fill" function, and updating cbind/rbind options to be
+consistent with S3 methods.
 
 In March, 2016, acs version 2.0 was released, considered a substantial
 update over the previous version 1.2 due to (1) a major expansion in
@@ -120,6 +132,8 @@ If you've previously installed the package, you can upgrade with:
 ```R
 update.packages("acs", clean=T)
 ```
+
+Remember to re-run acs.tables.install() after upgrading (see above).
 
 ## Use
 

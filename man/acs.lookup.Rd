@@ -37,7 +37,8 @@ acs.lookup(endyear, span = 5, dataset = "acs", keyword,
   \item{endyear}{an integer indicating the latest year of the data in
     the survey (e.g., for data from the 2007-2011 5-year ACS data,
     endyear would be 2011; limited by acceptable values currently
-    provided by the Census API)}
+    provided by the Census API); for 2016 and later, the 2015 lookup
+    tables are used (see details).}
 
   \item{span}{an integer indicating the span (in years) of the desired
     ACS data (should be 1, 3, or 5); defaults to 5.  Ignored and reset
@@ -86,7 +87,17 @@ For example, once the 2011-2015 5-year ACS data is available via the
 API, users can attempt the following to access Table B01003, even before
 the new version of the package is installed with the correct variable
 lookup tables: \code{acs.fetch(endyear=2015, span=5,
-variable=acs.lookup(endyear=2014, span=5, table.number="B01003"))}. }
+  variable=acs.lookup(endyear=2014, span=5, table.number="B01003"))}.
+
+Note: version 2.1.3 of the package implements a "workaround" to address a
+problem accessing data from 2016, when the Census Bureau seems to have
+changed the format for their XML variable lookup tables, causing calls
+to acs.lookup (and acs.fetch) to fail for "endyear=2016".  The
+(hopefully) temporary solution was to simply use the 2015 lookup tables
+for these requests, which should be safe in most situations, since table
+numbers and variable codes generally do not change from year to year.
+In certain situations, this may not be true: see
+\url{https://www.census.gov/programs-surveys/acs/technical-documentation/table-and-geography-changes/2016/5-year.html}.}
 
 \value{ Returns an acs.lookup class object with the results of the
   query.  acs.lookup objects can be subsetted and combined, and passed
