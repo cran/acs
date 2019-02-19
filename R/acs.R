@@ -138,8 +138,9 @@ api.url.maker=function(endyear, span, key, variables, dataset, geo.call) {
   api.in=paste0(paste(api.in.names, api.in.values, sep=":"), collapse="+")
 
   if (!identical(api.in, "")) api.in=paste0("&in=",api.in)
-  api.url=paste0("https://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
-  if (endyear>2015 && dataset=="acs") {api.url=paste0("https://api.census.gov/data/", endyear, "/acs/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)}
+  api.url=paste0("https://api.census.gov/data/", endyear, "/acs/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)
+  if (endyear==2009 && dataset=="acs") {api.url=paste0("https://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)}
+  if (span==3 && dataset=="acs") {api.url=paste0("https://api.census.gov/data/", endyear, "/" , dataset, span, "?key=", key, "&get=", variables, ",NAME&", api.for, api.in)}
   api.url
 }
 
@@ -871,10 +872,16 @@ setClass(Class="acs.lookup", representation =
   # doc.url is path to census file for XML variables
       if(dataset=="acs") {
         doc.string=paste(dataset,"_", span,"yr_", endyear,"_var.xml.gz", sep="")
-        doc.url=paste("https://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
+        doc.url=paste("https://api.census.gov/data/", endyear,"/acs/acs",span,"/subject/variables.xml", sep="")
         # next line to correct change in url for variables 2016 and later
-        if(endyear>2015){
-        doc.url=paste("https://api.census.gov/data/", endyear,"/acs/acs",span,"/variables.xml", sep="")
+        if(span==3){
+        doc.url=paste("https://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
+        }
+        if(endyear==2009){
+        doc.url=paste("https://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
+        }
+        if(endyear<2015 && span==1){
+        doc.url=paste("https://api.census.gov/data/", endyear,"/acs",span,"/variables.xml", sep="")
         }
       }
       if(dataset=="sf1" | dataset=="sf3"){
@@ -888,19 +895,17 @@ setClass(Class="acs.lookup", representation =
           doc=xmlInternalTreeParse(system.file(paste("extdata/", doc.string, sep=""), package="acs"))
       }
       # next check online at census site
-      else if(!http_error(doc.url))
-      {
-          temp <- GET(doc.url)
-          doc=xmlInternalTreeParse(temp)
-          # changed in v 2.1 due to https issue;
-          # in v 2.0, previous two lines were just this:
-          #   doc=xmlInternalTreeParse(doc.url)
-      }
+      # needed to comment this out in 2.1.4 -- was causing trouble!
+      # else if(!http_error(doc.url))
+      # {
+      #    temp <- GET(doc.url)
+      #    doc=xmlInternalTreeParse(temp)
+      # }
       # finally, check personal eglenn archive
       else if(!http_error(paste("http://web.mit.edu/eglenn/www/acs/acs-variables/", doc.string, sep="")))
       {
           # since only here is issues, give some advice
-          warning(paste("XML variable lookup tables for this request\n  seem to be missing from '", doc.url, "';\n  temporarily downloading and using archived copies instead;\n  since this is *much* slower, recommend running\n  acs.tables.install()"), sep="")  
+          warning(paste("temporarily downloading and using archived XML variable lookup files;\n  since this is *much* slower, recommend running\n  acs.tables.install()"), sep="")  
           doc.download=tempfile()
           download.file(url=paste("http://web.mit.edu/eglenn/www/acs/acs-variables/", doc.string, sep=""), destfile=doc.download)
           doc=xmlInternalTreeParse(doc.download)
@@ -1125,7 +1130,12 @@ read.acs=function(filename, endyear="auto", span="auto",
       datacols=datacols[-geocols]
       in.data=in.data[,c(geocols,datacols)]
       in.data[in.data=="*****"]=0
+      in.data[in.data=="-999999999"]=NA
+      in.data[in.data=="-888888888"]=NA
+      in.data[in.data=="-666666666"]=NA
       in.data[in.data=="-555555555"]=0
+      in.data[in.data=="-333333333"]=NA
+      in.data[in.data=="-222222222"]=NA
       for (i in (length(geocols)+1):length(in.data)) {
         in.data[[i]]=gsub(",", "", in.data[[i]])
         in.data[[i]]=as.numeric(in.data[[i]])  
@@ -1302,7 +1312,12 @@ acs.fetch=function(endyear, span=5, geography, table.name,
         }
         datacols=1:(length(in.data)-geo.length)
         in.data[in.data=="*****"]=0
+        in.data[in.data=="-999999999"]=NA
+        in.data[in.data=="-888888888"]=NA
+        in.data[in.data=="-666666666"]=NA
         in.data[in.data=="-555555555"]=0
+        in.data[in.data=="-333333333"]=NA
+        in.data[in.data=="-222222222"]=NA
         in.data[[1]]=gsub("[","",in.data[[1]], fixed=T )
         in.data[[length(in.data)]]=gsub("]","",in.data[[length(in.data)]], fixed=T )
                                             # clean brackets

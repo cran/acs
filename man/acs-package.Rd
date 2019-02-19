@@ -18,7 +18,7 @@ Provides a general toolkit for downloading, managing, analyzing, and
   appropriate ways.}
 
 \details{ \tabular{ll}{ Package: \tab acs\cr Type: \tab Package\cr
-  Version: \tab 2.1.3\cr Date: \tab 2018-03-01\cr License: \tab GPL-3\cr
+  Version: \tab 2.1.4\cr Date: \tab 2018-02-14\cr License: \tab GPL-3\cr
   Depends: \tab stringr, methods, XML\cr }
 
 The package defines a new "acs" class (containing estimates, standard
